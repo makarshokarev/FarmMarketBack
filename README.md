@@ -1,6 +1,6 @@
 # FarmMarket
 
 ## Scope
-**1 Tund**: Farm market products!!!
+**23.11.2020**: Farm market products!!! Project created, defined project scope and deliverables.
 
 
