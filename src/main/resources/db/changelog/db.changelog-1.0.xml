@@ -5,5 +5,102 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet  author="authorName"  id="changelog-1.0">
+
+    <createTable  tableName="seller">
+        <column  name="seller_id"  type="int" autoIncrement="true">
+            <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+        </column>
+        <column  name="name"  type="text">
+            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+        </column>
+        <column  name="personal_information"  type="text">
+            <constraints  nullable="true"  primaryKey="false"  unique="false"/>
+        </column>
+        <column  name="address"  type="text" >
+            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+        </column>
+        <column  name="phone"  type="int" >
+            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+        </column>
+    </createTable>
+
+        <createTable  tableName="sellers_details">
+            <column  name="id"  type="int" >
+                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
+            </column>
+            <column  name="email"  type="text" >
+                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+            </column>
+            <column  name="username"  type="text">
+                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
+            </column>
+            <column  name="password"  type="text" >
+                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable  tableName="product">
+            <column  name="category"  type="varchar(250)">
+                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+            </column>
+            <column  name="productname"  type="text" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
+            <column  name="product_description"  type="text" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
+        <column  name="price"  type="bigint" >
+            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+        </column>
+            <column  name="amount(kg)"  type="bigint" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
+        </createTable>
+
+        <createTable  tableName="category">
+            <column  name="category_name"  type="varchar(250)" >
+                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="seller"
+                                 baseColumnNames="seller_id"
+                                 constraintName="fk_sellers_details_seller"
+                                 referencedTableName="sellers_details"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="category"
+                                 constraintName="fk_category_product"
+                                 referencedTableName="category"
+                                 referencedColumnNames="category_name"
+                                 onDelete="SET NULL"/>
+    </changeSet>
+    <changeSet  author=""  id="">
+        <insert tableName="category">
+            <column name="category_name" value="meat"/>
+        </insert>
+        <sql>
+            insert into category (category_name) values ('diary')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('vegetables')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('fruits')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('flowers')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('eggs')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('mushrooms')
+        </sql>
+        <sql>
+            insert into category (category_name) values ('fish')
+        </sql>
     </changeSet>
 </databaseChangeLog>
