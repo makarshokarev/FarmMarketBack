@@ -12,10 +12,12 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler (ApplicationException.class)
     public ResponseEntity<Object> handleApplicationException(ApplicationException e) {
+        e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler (Exception.class)
     public ResponseEntity<Object> handleError(Exception e) {
+        e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponse("server error"), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
