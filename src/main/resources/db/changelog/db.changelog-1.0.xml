@@ -76,12 +76,12 @@
                                  referencedColumnNames="seller_id"
                                  onDelete="SET NULL"/>
 
-        <addForeignKeyConstraint baseTableName="product"
-                                 baseColumnNames="id"
-                                 constraintName="fk_category_product"
-                                 referencedTableName="category"
-                                 referencedColumnNames="id"
-                                 onDelete="SET NULL"/>
+<!--        <addForeignKeyConstraint baseTableName="product"-->
+<!--                                 baseColumnNames="id"-->
+<!--                                 constraintName="fk_category_product"-->
+<!--                                 referencedTableName="category"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 onDelete="SET NULL"/>-->
     </changeSet>
     <changeSet  author=""  id="">
         <insert tableName="category">
