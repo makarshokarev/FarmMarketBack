@@ -20,7 +20,7 @@
             <constraints  nullable="true"  primaryKey="false"  unique="true"/>
         </column>
         <column  name="password"  type="text" >
-            <constraints  nullable="true"  primaryKey="false"  unique="true"/>
+            <constraints  nullable="true"  primaryKey="false"  unique="false"/>
         </column>
         <column  name="personal_information"  type="text">
             <constraints  nullable="true"  primaryKey="false"  unique="false"/>

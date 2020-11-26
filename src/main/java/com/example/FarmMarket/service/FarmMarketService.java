@@ -1,10 +1,15 @@
 package com.example.FarmMarket.service;
 
+import com.example.FarmMarket.exception.ApplicationException;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.repository.FarmMarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.sql.SQLException;
 import java.math.BigDecimal;
 
 @Service
@@ -13,7 +18,17 @@ public class FarmMarketService {
     private FarmMarketRepository farmMarketRepository;
 
     public void newSeller(String name, String email,String username, String password, String phone) {
+        if(farmMarketRepository.doesEmailExist(email)){
+            throw new ApplicationException("This email is already in use");
+        }
+        if (farmMarketRepository.doesUsernameExist(username)){
+            throw new ApplicationException("This username is already in use");
+        }
+        try{
         farmMarketRepository.newSeller(name, email, username, password, phone);
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     public void newProduct(String category, String product_name, String product_description,

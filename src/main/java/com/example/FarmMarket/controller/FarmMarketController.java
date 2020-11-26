@@ -14,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
-
+@CrossOrigin
 @RestController
 public class FarmMarketController {
     @Autowired
     private FarmMarketService farmMarketService;
 
+    @CrossOrigin
     @PostMapping("newSeller")
-    public void newSeller (@RequestBody Seller seller) {
+    public PopUpWindow newSeller (@RequestBody Seller seller) {
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), seller.getPassword(), seller.getPhone());
+        return new PopUpWindow("Thank you for registration.");
     }
+
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct (@RequestBody Product product) {
