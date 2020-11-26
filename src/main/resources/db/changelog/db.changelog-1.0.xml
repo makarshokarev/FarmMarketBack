@@ -7,44 +7,38 @@
     <changeSet  author="authorName"  id="changelog-1.0">
 
     <createTable  tableName="seller">
-        <column  name="seller_id"  type="int" autoIncrement="true">
+        <column  name="id"  type="int" autoIncrement="true">
             <constraints  nullable="false"  primaryKey="true"  unique="true"/>
         </column>
         <column  name="name"  type="text">
             <constraints  nullable="false"  primaryKey="false"  unique="false"/>
         </column>
+        <column  name="email"  type="text" >
+            <constraints  nullable="false"  primaryKey="false"  unique="true"/>
+        </column>
+        <column  name="username"  type="text">
+            <constraints  nullable="true"  primaryKey="false"  unique="true"/>
+        </column>
+        <column  name="password"  type="text" >
+            <constraints  nullable="true"  primaryKey="false"  unique="true"/>
+        </column>
         <column  name="personal_information"  type="text">
             <constraints  nullable="true"  primaryKey="false"  unique="false"/>
         </column>
         <column  name="address"  type="text" >
-            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            <constraints  nullable="true"  primaryKey="false"  unique="false"/>
         </column>
         <column  name="phone"  type="text" >
-            <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            <constraints  nullable="true"  primaryKey="false"  unique="false"/>
         </column>
     </createTable>
 
-        <createTable  tableName="seller_detail">
-            <column  name="id"  type="int" >
-                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
-            </column>
-            <column  name="email"  type="text" >
-                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
-            </column>
-            <column  name="username"  type="text">
-                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
-            </column>
-            <column  name="password"  type="text" >
-                <constraints  nullable="false"  primaryKey="false"  unique="true"/>
-            </column>
-        </createTable>
-
         <createTable  tableName="product">
-            <column  name="category"  type="varchar(250)">
+            <column  name="category_id"  type="int">
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
             </column>
             <column  name="id"  type="int" autoIncrement="true">
-                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+                <constraints  nullable="false"  primaryKey="true"  unique="false"/>
             </column>
             <column  name="product_name"  type="text" >
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
@@ -69,20 +63,14 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="seller_detail"
-                                 baseColumnNames="id"
-                                 constraintName="fk_seller_seller_detail"
-                                 referencedTableName="seller"
-                                 referencedColumnNames="seller_id"
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="category_id"
+                                 constraintName="fk_category_product"
+                                 referencedTableName="category"
+                                 referencedColumnNames="id"
                                  onDelete="SET NULL"/>
 
-<!--        <addForeignKeyConstraint baseTableName="product"-->
-<!--                                 baseColumnNames="id"-->
-<!--                                 constraintName="fk_category_product"-->
-<!--                                 referencedTableName="category"-->
-<!--                                 referencedColumnNames="id"-->
-<!--                                 onDelete="SET NULL"/>-->
-    </changeSet>
+           </changeSet>
     <changeSet  author=""  id="">
         <insert tableName="category">
             <column name="category_name" value="meat"/>
