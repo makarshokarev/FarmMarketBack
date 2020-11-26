@@ -2,7 +2,9 @@ package com.example.FarmMarket.controller;
 
 
 
-import com.example.FarmMarket.Seller;
+import com.example.FarmMarket.objects.Category;
+import com.example.FarmMarket.objects.Seller;
+import com.example.FarmMarket.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -13,12 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigInteger;
-@CrossOrigin
+
 @RestController
 public class FarmMarketController {
     @Autowired
     private FarmMarketService farmMarketService;
+    @Autowired
+    private CategoryService categoryService;
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -30,9 +33,17 @@ public class FarmMarketController {
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct (@RequestBody Product product) {
-        farmMarketService.newProduct(product.getCategory(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.newProduct(product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
+
+    @GetMapping("category")
+    @CrossOrigin
+    public List<Category> getAccount() {
+        List<Category> result = categoryService.getCategory();
+        return result;
+    }
+
     @PutMapping("updateSellerName")
     public void updateSellerName(@RequestBody Seller seller){
         farmMarketService.updateSellerName(seller.getId(), seller.getName());

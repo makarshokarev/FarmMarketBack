@@ -1,4 +1,4 @@
-package com.example.FarmMarket;
+package com.example.FarmMarket.objects;
 
 public class Seller {
     private int id;

@@ -26,6 +26,7 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
+
     public boolean doesEmailExist(String email){
         String sql = "SELECT count(*) from seller where email = :m1";
         Map<String, String> paramMap = new HashMap<>();
@@ -42,18 +43,29 @@ public class FarmMarketRepository {
         return count > 0;
     }
 
-    public void newProduct(String category, String product_name, String product_description,
-                           BigDecimal price, BigDecimal amount) {
-        String sql = "insert into product (category, product_name, product_description, price, amount) values " +
-                "(:category, :product_name, :product_description, :price, :amount)";
+    
+
+    public int getId(int catId) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("category", category);
-        paramMap.put("product_name", product_name);
-        paramMap.put("product_description", product_description);
-        paramMap.put("price", price);
-        paramMap.put("amount", amount);
+        String sql1 = "SELECT id FROM category WHERE id = :m1";
+        paramMap.put("m1", catId);
+        int categoryId = jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
+        return categoryId;
+    }
+
+    public void newProduct(int categoryId, String product_name, String product_description,
+                           BigDecimal price, BigDecimal amount) {
+        String sql = "insert into product (category_id, product_name, product_description, price, amount) values " +
+                "(:m1, :m2, :m3, :m4, :m5)";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("m1", getId(categoryId));
+        paramMap.put("m2", product_name);
+        paramMap.put("m3", product_description);
+        paramMap.put("m4", price);
+        paramMap.put("m5", amount);
         jdbcTemplate.update(sql, paramMap);
     }
+
 
     public void updateSellerName(int ID, String newName){
         String sql = "UPDATE seller SET name =:m1 WHERE id = :m2";
