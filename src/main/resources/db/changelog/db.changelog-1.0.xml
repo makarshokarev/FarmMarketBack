@@ -69,7 +69,8 @@
                                  referencedTableName="category"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
-    </changeSet>
+
+           </changeSet>
     <changeSet  author=""  id="">
         <insert tableName="category">
             <column name="category_name" value="meat"/>

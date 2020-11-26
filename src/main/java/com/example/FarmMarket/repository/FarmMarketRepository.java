@@ -26,7 +26,7 @@ public class FarmMarketRepository {
     }
 
     public void newProduct(String category, String product_name, String product_description,
-                           BigInteger price, BigInteger amount) {
+                           BigDecimal price, BigDecimal amount) {
         String sql = "insert into product (category, product_name, product_description, price, amount) values " +
                 "(:category, :product_name, :product_description, :price, :amount)";
         Map<String, Object> paramMap = new HashMap<>();

@@ -1,10 +1,17 @@
 package com.example.FarmMarket.controller;
 
 
+
 import com.example.FarmMarket.Seller;
+import org.springframework.web.bind.annotation.*;
+import com.example.FarmMarket.objects.PopUpWindow;
+import com.example.FarmMarket.objects.Product;
 import com.example.FarmMarket.service.FarmMarketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 
@@ -17,11 +24,11 @@ public class FarmMarketController {
     public void newSeller (@RequestBody Seller seller) {
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), seller.getPassword(), seller.getPhone());
     }
-
+    @CrossOrigin
     @PostMapping("newProduct")
-    public void newProduct (String category, String product_name, String product_description,
-                            BigInteger price, BigInteger amount) {
-        farmMarketService.newProduct(category, product_name, product_description, price, amount);
+    public PopUpWindow newProduct (@RequestBody Product product) {
+        farmMarketService.newProduct(product.getCategory(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        return new PopUpWindow("You have added new product: " + product.getProductName());
     }
     @PutMapping("updateSellerName")
     public void updateSellerName(@RequestBody Seller seller){
