@@ -1,6 +1,7 @@
 package com.example.FarmMarket.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,13 +26,24 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-//    public String getName(int categoryId) {
-//        Map<String, Object> paramMap = new HashMap<>();
-//        String sql1 = "SELECT category_name FROM category WHERE id = :m1";
-//        paramMap.put("m1", categoryId);
-//        String categoryName = jdbcTemplate.queryForObject(sql1, paramMap, String.class);
-//        return categoryName;
-//    }
+
+    public boolean doesEmailExist(String email){
+        String sql = "SELECT count(*) from seller where email = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", email);
+        Integer count = jdbcTemplate.queryForObject(sql, paramMap, Integer.class);
+        return count > 0;
+    }
+
+    public boolean doesUsernameExist(String username){
+        String sql = "SELECT count(*) from seller where username = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", username);
+        Integer count = jdbcTemplate.queryForObject(sql, paramMap, Integer.class);
+        return count > 0;
+    }
+
+    
 
     public int getId(int catId) {
         Map<String, Object> paramMap = new HashMap<>();

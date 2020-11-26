@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 public class FarmMarketController {
@@ -24,10 +23,13 @@ public class FarmMarketController {
     @Autowired
     private CategoryService categoryService;
 
+    @CrossOrigin
     @PostMapping("newSeller")
-    public void newSeller (@RequestBody Seller seller) {
+    public PopUpWindow newSeller (@RequestBody Seller seller) {
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), seller.getPassword(), seller.getPhone());
+        return new PopUpWindow("Thank you for registration.");
     }
+
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct (@RequestBody Product product) {
