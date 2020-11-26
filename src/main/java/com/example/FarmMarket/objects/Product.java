@@ -3,18 +3,18 @@ package com.example.FarmMarket.objects;
 import java.math.BigDecimal;
 
 public class Product {
-    private String category;
+    private int categoryId;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
 
-    public String getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getProductName() {

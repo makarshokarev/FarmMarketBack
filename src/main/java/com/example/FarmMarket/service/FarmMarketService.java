@@ -16,9 +16,9 @@ public class FarmMarketService {
         farmMarketRepository.newSeller(name, email, username, password, phone);
     }
 
-    public void newProduct(String category, String product_name, String product_description,
+    public void newProduct(int categoryId, String product_name, String product_description,
                                   BigDecimal price, BigDecimal amount) {
-        farmMarketRepository.newProduct(category, product_name, product_description, price, amount);
+        farmMarketRepository.newProduct(categoryId, product_name, product_description, price, amount);
     }
 
     public void updateSellerName(int ID, String newName){
