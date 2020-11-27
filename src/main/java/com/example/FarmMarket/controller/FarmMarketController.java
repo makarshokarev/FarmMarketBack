@@ -4,6 +4,7 @@ package com.example.FarmMarket.controller;
 
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Seller;
+import com.example.FarmMarket.repository.CategoryRepository;
 import com.example.FarmMarket.repository.ProductRepository;
 import com.example.FarmMarket.repository.SellerRepository;
 import com.example.FarmMarket.service.CategoryService;
@@ -30,6 +31,8 @@ public class FarmMarketController {
     private ProductRepository productRepository;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -98,6 +101,12 @@ public class FarmMarketController {
     @GetMapping("getAllSellers")
     public List<Seller> getAllSellers() {
         return sellerRepository.findAll();
+    }
+
+    @CrossOrigin
+    @GetMapping("getAllCategories")
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
 }
