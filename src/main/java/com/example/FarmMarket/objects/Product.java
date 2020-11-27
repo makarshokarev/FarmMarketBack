@@ -1,7 +1,12 @@
 package com.example.FarmMarket.objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
+@Entity
 public class Product {
     private int id;
     private int categoryId;
@@ -9,6 +14,11 @@ public class Product {
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
+
+    @Id
+    @GeneratedValue(strategy =
+            GenerationType.IDENTITY)
+    private Integer id;
 
     public int getId() {
         return id;
