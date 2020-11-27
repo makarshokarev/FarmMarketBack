@@ -5,6 +5,8 @@ package com.example.FarmMarket.controller;
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Seller;
 import com.example.FarmMarket.service.CategoryService;
+import com.example.FarmMarket.service.ProductService;
+import liquibase.pro.packaged.A;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
 public class FarmMarketController {
@@ -22,6 +26,8 @@ public class FarmMarketController {
     private FarmMarketService farmMarketService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -41,6 +47,13 @@ public class FarmMarketController {
     @CrossOrigin
     public List<Category> getAccount() {
         List<Category> result = categoryService.getCategory();
+        return result;
+    }
+
+    @CrossOrigin
+    @GetMapping("product")
+    public List<Product> getProduct(){
+        List<Product> result = productService.getProduct();
         return result;
     }
 

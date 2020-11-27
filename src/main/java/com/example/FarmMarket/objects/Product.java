@@ -3,11 +3,20 @@ package com.example.FarmMarket.objects;
 import java.math.BigDecimal;
 
 public class Product {
+    private int id;
     private int categoryId;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getCategoryId() {
         return categoryId;

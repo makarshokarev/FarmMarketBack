@@ -34,11 +34,8 @@
     </createTable>
 
         <createTable  tableName="product">
-            <column  name="category_id"  type="int">
-                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
-            </column>
             <column  name="id"  type="int" autoIncrement="true">
-                <constraints  nullable="false"  primaryKey="true"  unique="false"/>
+                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
             </column>
             <column  name="product_name"  type="text" >
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
@@ -50,6 +47,9 @@
             <constraints  nullable="false"  primaryKey="false"  unique="false"/>
         </column>
             <column  name="amount"  type="bigint" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
+            <column  name="category_id"  type="int">
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
             </column>
         </createTable>
@@ -73,28 +73,28 @@
            </changeSet>
     <changeSet  author=""  id="">
         <insert tableName="category">
-            <column name="category_name" value="meat"/>
+            <column name="category_name" value="Meat"/>
         </insert>
         <sql>
-            insert into category (category_name) values ('diary')
+            insert into category (category_name) values ('Diary')
         </sql>
         <sql>
-            insert into category (category_name) values ('vegetables')
+            insert into category (category_name) values ('Vegetables')
         </sql>
         <sql>
-            insert into category (category_name) values ('fruits')
+            insert into category (category_name) values ('Fruits')
         </sql>
         <sql>
-            insert into category (category_name) values ('flowers')
+            insert into category (category_name) values ('Flowers')
         </sql>
         <sql>
-            insert into category (category_name) values ('eggs')
+            insert into category (category_name) values ('Eggs')
         </sql>
         <sql>
-            insert into category (category_name) values ('mushrooms')
+            insert into category (category_name) values ('Mushrooms')
         </sql>
         <sql>
-            insert into category (category_name) values ('fish')
+            insert into category (category_name) values ('Fish')
         </sql>
     </changeSet>
 </databaseChangeLog>
