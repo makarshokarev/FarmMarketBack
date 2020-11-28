@@ -1,7 +1,12 @@
-package com.example.FarmMarket;
+package com.example.FarmMarket.objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Seller {
-    private int id;
+
     private String Name;
     private String Email;
     private String Username;
@@ -9,6 +14,12 @@ public class Seller {
     private String PersonalInformation;
     private String Address;
     private String Phone;
+
+    @Id
+    @GeneratedValue(strategy =
+            GenerationType.IDENTITY)
+    private Integer id;
+
 
     public int getId() {
         return id;

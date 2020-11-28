@@ -1,20 +1,38 @@
 package com.example.FarmMarket.objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
+@Entity
 public class Product {
-    private String category;
+    private int categoryId;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
 
-    public String getCategory() {
-        return category;
+    @Id
+    @GeneratedValue(strategy =
+            GenerationType.IDENTITY)
+    private Integer id;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getProductName() {

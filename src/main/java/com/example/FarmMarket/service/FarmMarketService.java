@@ -2,6 +2,7 @@ package com.example.FarmMarket.service;
 
 import com.example.FarmMarket.exception.ApplicationException;
 import com.example.FarmMarket.objects.PopUpWindow;
+import com.example.FarmMarket.objects.Product;
 import com.example.FarmMarket.repository.FarmMarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FarmMarketService {
@@ -31,9 +34,9 @@ public class FarmMarketService {
         }
     }
 
-    public void newProduct(String category, String product_name, String product_description,
-                                  BigDecimal price, BigDecimal amount) {
-        farmMarketRepository.newProduct(category, product_name, product_description, price, amount);
+    public void newProduct(int categoryId, String product_name, String product_description,
+                           BigDecimal price, BigDecimal amount) {
+        farmMarketRepository.newProduct(categoryId, product_name, product_description, price, amount);
     }
 
     public void updateSellerName(int ID, String newName){
@@ -58,8 +61,23 @@ public class FarmMarketService {
     public void updateSellerEmail(int ID, String email){
         farmMarketRepository.updateSellerEmail(ID, email);
     }
-    public void updateSellerPassword(int ID, String password){
-        farmMarketRepository.updateSellerPassword(ID, password);
+    public void updateSellerPassword(String name, String username, String email, String password){
+        if(farmMarketRepository.doesEmailExist(email)){
+            String nameInTable = farmMarketRepository.getName(email);
+            String usernameInTable = farmMarketRepository.getUsername(email);
+            if (nameInTable.equals(name) && usernameInTable.equals(username)){
+                farmMarketRepository.updateSellerPassword(email, password);
+            }
+        }else { throw new ApplicationException("Email is incorrect");}
+    }
+
+    public List<Product> getLatest(){
+        List<Integer> numbrid = farmMarketRepository.last3ProductsID();
+        List<Product> lastProducts = new ArrayList<>();
+        for (Integer integer : numbrid) {
+            lastProducts.add(farmMarketRepository.getLatest(integer));
+        }
+        return lastProducts;
     }
 
 }

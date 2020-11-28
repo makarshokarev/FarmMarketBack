@@ -1,14 +1,17 @@
 package com.example.FarmMarket.repository;
 
+import com.example.FarmMarket.ProductRowMapper;
+import com.example.FarmMarket.objects.Category;
+import com.example.FarmMarket.objects.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class FarmMarketRepository {
@@ -42,16 +45,16 @@ public class FarmMarketRepository {
         return count > 0;
     }
 
-    public void newProduct(String category, String product_name, String product_description,
+    public void newProduct(int categoryId, String product_name, String product_description,
                            BigDecimal price, BigDecimal amount) {
-        String sql = "insert into product (category, product_name, product_description, price, amount) values " +
-                "(:category, :product_name, :product_description, :price, :amount)";
+        String sql = "insert into product (category_id, product_name, product_description, price, amount) values " +
+                "(:m1, :m2, :m3, :m4, :m5)";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("category", category);
-        paramMap.put("product_name", product_name);
-        paramMap.put("product_description", product_description);
-        paramMap.put("price", price);
-        paramMap.put("amount", amount);
+        paramMap.put("m1", categoryId);
+        paramMap.put("m2", product_name);
+        paramMap.put("m3", product_description);
+        paramMap.put("m4", price);
+        paramMap.put("m5", amount);
         jdbcTemplate.update(sql, paramMap);
     }
 
@@ -102,11 +105,45 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public void updateSellerPassword(int ID, String password) {
-        String sql = "UPDATE seller SET password =:m1 WHERE id = :m2";
+    public void updateSellerPassword(String email, String password) {
+        String sql = "UPDATE seller SET password =:m1 WHERE email = :m2";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", password);
-        paramMap.put("m2", ID);
+        paramMap.put("m2", email);
         jdbcTemplate.update(sql, paramMap);
+    }
+
+    public String getName( String email) {
+        String sql = "SELECT name from seller where email = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", email);
+        return jdbcTemplate.queryForObject(sql, paramMap, String.class);
+    }
+
+    public String getUsername(String email) {
+        String sql = "SELECT username from seller where email = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", email);
+        return jdbcTemplate.queryForObject(sql, paramMap, String.class);
+    }
+
+    public List<Integer> last3ProductsID(){
+        String sql = "SELECT id from product ";
+        Map<String, Object> paramMap = new HashMap<>();
+        List<Integer> answer = new ArrayList<>();
+        answer = jdbcTemplate.queryForList(sql, paramMap, Integer.class);
+        Collections.sort(answer);
+        List<Integer> viimased = new ArrayList<>();
+        for(int i =0; i<3; i++){
+            viimased.add(answer.get(answer.size()-1-i));
+        }
+        return viimased;
+    }
+
+    public Product getLatest(int number){
+        String sql = "SELECT * from product where id = :m1";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("m1", number);
+        return jdbcTemplate.queryForObject(sql, paramMap, new ProductRowMapper());
     }
 }
