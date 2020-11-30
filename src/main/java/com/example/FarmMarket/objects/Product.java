@@ -8,11 +8,15 @@ import java.math.BigDecimal;
 
 @Entity
 public class Product {
+    private int id;
     private int categoryId;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
+
+
+
 
 
     @Id
@@ -27,6 +31,7 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
+
 
 
     public int getCategoryId() {

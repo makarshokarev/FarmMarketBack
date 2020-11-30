@@ -8,6 +8,7 @@ import com.example.FarmMarket.repository.CategoryRepository;
 import com.example.FarmMarket.repository.ProductRepository;
 import com.example.FarmMarket.repository.SellerRepository;
 import com.example.FarmMarket.service.CategoryService;
+import com.example.FarmMarket.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 import java.util.List;
@@ -29,11 +32,15 @@ public class FarmMarketController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
+
+    private ProductService productService;
+
     private ProductRepository productRepository;
     @Autowired
     private SellerRepository sellerRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -54,6 +61,13 @@ public class FarmMarketController {
     @CrossOrigin
     public List<Category> getAccount() {
         List<Category> result = categoryService.getCategory();
+        return result;
+    }
+
+    @CrossOrigin
+    @GetMapping("product")
+    public List<Product> getProduct(){
+        List<Product> result = productService.getProduct();
         return result;
     }
 
@@ -105,6 +119,8 @@ public class FarmMarketController {
         return sellerRepository.findAll();
     }
 
+
+
     @CrossOrigin
     @GetMapping("getAllCategories")
     public List<Category> getAllCategories() {
@@ -116,6 +132,7 @@ public class FarmMarketController {
     public List<Product> getLatest() {
         return farmMarketService.getLatest();
     }
+
 
 
 }
