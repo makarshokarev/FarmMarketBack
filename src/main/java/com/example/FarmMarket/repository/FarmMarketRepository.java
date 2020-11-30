@@ -1,16 +1,11 @@
 package com.example.FarmMarket.repository;
 
 import com.example.FarmMarket.rowmapper.ProductRowMapper;
-import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.*;
 
 @Repository
@@ -27,6 +22,13 @@ public class FarmMarketRepository {
         paramMap.put("m4", password);
         paramMap.put("m5", phone);
         jdbcTemplate.update(sql, paramMap);
+    }
+
+    public String getPassword(String username){
+        String sql = "Select password from seller where username = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", username);
+        return jdbcTemplate.queryForObject(sql, paramMap, String.class);
     }
 
 

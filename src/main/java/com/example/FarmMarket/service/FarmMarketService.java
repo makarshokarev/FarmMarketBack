@@ -1,16 +1,10 @@
 package com.example.FarmMarket.service;
 
 import com.example.FarmMarket.exception.ApplicationException;
-import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
 import com.example.FarmMarket.repository.FarmMarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.stereotype.Service;
-
-import java.math.BigInteger;
-import java.sql.SQLException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +58,15 @@ public class FarmMarketService {
     public void updateSellerPassword(String name, String username, String email, String password){
         if(farmMarketRepository.doesEmailExist(email)){
             String nameInTable = farmMarketRepository.getName(email);
-            String usernameInTable = farmMarketRepository.getUsername(email);
-            if (nameInTable.equals(name) && usernameInTable.equals(username)){
-                farmMarketRepository.updateSellerPassword(email, password);
+            if(!nameInTable.equals(name)){
+                throw new ApplicationException("Name is incorrect");
             }
-        }else { throw new ApplicationException("Email is incorrect");}
+            String usernameInTable = farmMarketRepository.getUsername(email);
+            if(!usernameInTable.equals(username)){
+                throw new ApplicationException("Username is incorrect");
+            }
+            farmMarketRepository.updateSellerPassword(email, password);
+    }throw new ApplicationException("Email is incorrect");
     }
 
     public List<Product> getLatest(){
