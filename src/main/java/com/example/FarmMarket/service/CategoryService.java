@@ -1,5 +1,4 @@
 package com.example.FarmMarket.service;
-
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.repository.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,4 +15,7 @@ public class CategoryService {
         List<Category> result = categoryRepo.getCategory();
         return result;
     }
+
 }
+
+

@@ -8,6 +8,7 @@ import com.example.FarmMarket.repository.CategoryRepository;
 import com.example.FarmMarket.repository.ProductRepository;
 import com.example.FarmMarket.repository.SellerRepository;
 import com.example.FarmMarket.service.CategoryService;
+import com.example.FarmMarket.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+import java.util.List;
+
+
 @RestController
 public class FarmMarketController {
     @Autowired
@@ -28,6 +32,9 @@ public class FarmMarketController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
+
+    private ProductService productService;
+
     private ProductRepository productRepository;
     @Autowired
     private SellerRepository sellerRepository;
@@ -48,6 +55,7 @@ public class FarmMarketController {
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
 
+
     @GetMapping("category")
     @CrossOrigin
     public List<Category> getAccount() {
@@ -55,40 +63,48 @@ public class FarmMarketController {
         return result;
     }
 
+    @CrossOrigin
+    @GetMapping("product")
+    public List<Product> getProduct(){
+        List<Product> result = productService.getProduct();
+        return result;
+    }
+
     @PutMapping("updateSellerName")
     public void updateSellerName(@RequestBody Seller seller){
         farmMarketService.updateSellerName(seller.getId(), seller.getName());
     }
-
+    @CrossOrigin
     @PutMapping("updateSellerEmail")
     public void updateSellerEmail(@RequestBody Seller seller){
         farmMarketService.updateSellerEmail(seller.getId(), seller.getEmail());
     }
-
+    @CrossOrigin
     @PutMapping("updateSellerUsername")
     public void updateSellerUsername(@RequestBody Seller seller){
         farmMarketService.updateSellerUsername(seller.getId(), seller.getUsername());
     }
 
-
+    @CrossOrigin
     @PutMapping("updateSellerPersonalInformation")
     public void updateSellerPersonalInformation(@RequestBody Seller seller){
         farmMarketService.updateSellerPersonalInformation(seller.getId(), seller.getPersonalInformation());
     }
-
+    @CrossOrigin
     @PutMapping("updateSellerAddress")
     public void updateSellerAddress(@RequestBody Seller seller){
         farmMarketService.updateSellerAddress(seller.getId(), seller.getAddress());
     }
-
+    @CrossOrigin
     @PutMapping("updateSellerPhone")
     public void updateSellerPhone(@RequestBody Seller seller){
         farmMarketService.updateSellerPhone(seller.getId(), seller.getPhone());
     }
-
+    @CrossOrigin
     @PutMapping("updateSellerPassword")
-    public void updateSellerPassword(@RequestBody Seller seller){
-        farmMarketService.updateSellerPassword(seller.getId(), seller.getPassword());
+    public PopUpWindow updateSellerPassword(@RequestBody Seller seller){
+        farmMarketService.updateSellerPassword(seller.getName(), seller.getUsername(), seller.getEmail(),seller.getPassword());
+        return new PopUpWindow("Your Password is updates");
     }
 
     @CrossOrigin
@@ -96,17 +112,24 @@ public class FarmMarketController {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-
     @CrossOrigin
     @GetMapping("getAllSellers")
     public List<Seller> getAllSellers() {
         return sellerRepository.findAll();
     }
 
+
     @CrossOrigin
     @GetMapping("getAllCategories")
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+
+    @CrossOrigin
+    @GetMapping("getLatestProducts")
+    public List<Product> getLatest() {
+        return farmMarketService.getLatest();
     }
 
 }

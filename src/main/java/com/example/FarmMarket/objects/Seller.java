@@ -1,4 +1,13 @@
 package com.example.FarmMarket.objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Seller {
+
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +16,10 @@ import javax.persistence.Id;
 
 @Entity
 public class Seller {
+
+
+
+
 
     private String Name;
     private String Email;
@@ -85,4 +98,4 @@ public class Seller {
     public void setPhone(String phone) {
         Phone = phone;
     }
-}
+
