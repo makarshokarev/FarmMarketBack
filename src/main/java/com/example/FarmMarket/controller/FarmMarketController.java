@@ -11,7 +11,6 @@ import com.example.FarmMarket.service.ProductService;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.tomcat.jni.Local;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.service.FarmMarketService;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -116,7 +113,7 @@ public class FarmMarketController {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.updateSellerPassword(seller.getName(), seller.getUsername(), seller.getEmail(), encodedPassword);
-        return new PopUpWindow("Your Password is updates");
+        return new PopUpWindow("Your Password is updated");
     }
 
     @CrossOrigin
@@ -157,7 +154,6 @@ public class FarmMarketController {
                     .setIssuer("issuer")
                     .signWith(SignatureAlgorithm.HS256,
                             "secret")
-
                     .claim("usenrame", login.getUserName());
             String jwt = builder.compact();
             return jwt;
