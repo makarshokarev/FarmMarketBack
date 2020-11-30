@@ -8,17 +8,27 @@ import java.math.BigDecimal;
 
 @Entity
 public class Product {
-    private int categoryId;
+    @Id
+    @GeneratedValue(strategy =
+            GenerationType.IDENTITY)
+    private Integer id;
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
 
 
-    @Id
-    @GeneratedValue(strategy =
-            GenerationType.IDENTITY)
-    private Integer id;
+
 
     public Integer getId() {
         return id;
@@ -30,13 +40,6 @@ public class Product {
 
 
 
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public String getProductName() {
         return productName;
