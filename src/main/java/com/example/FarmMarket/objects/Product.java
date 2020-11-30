@@ -15,18 +15,24 @@ public class Product {
     private BigDecimal price;
     private BigDecimal amount;
 
+
+
+
+
     @Id
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
-    private Integer id1;
+    private Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
+
+
 
     public int getCategoryId() {
         return categoryId;
