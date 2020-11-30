@@ -13,6 +13,15 @@ public class Category {
             GenerationType.IDENTITY)
     private Integer id;
     private String categoryName;
+    private String categoryIcon;
+
+    public String getCategoryIcon() {
+        return categoryIcon;
+    }
+
+    public void setCategoryIcon(String categoryIcon) {
+        this.categoryIcon = categoryIcon;
+    }
 
     public int getId() {
         return id;
