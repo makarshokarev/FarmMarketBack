@@ -6,14 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+
 public class Category {
     @Id
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
     private Integer id;
-  
-public class Category {
-    private int id;
     private String categoryName;
 
     public int getId() {

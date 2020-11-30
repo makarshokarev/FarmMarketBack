@@ -41,7 +41,6 @@ public class FarmMarketController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
     @CrossOrigin
     @PostMapping("newSeller")
     public PopUpWindow newSeller (@RequestBody Seller seller) {
@@ -120,19 +119,17 @@ public class FarmMarketController {
     }
 
 
-
     @CrossOrigin
     @GetMapping("getAllCategories")
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
+
     @CrossOrigin
     @GetMapping("getLatestProducts")
     public List<Product> getLatest() {
         return farmMarketService.getLatest();
     }
-
-
 
 }
