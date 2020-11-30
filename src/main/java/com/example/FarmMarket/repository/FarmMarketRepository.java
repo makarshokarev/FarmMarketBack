@@ -4,6 +4,7 @@ import com.example.FarmMarket.rowmapper.ProductRowMapper;
 import com.example.FarmMarket.objects.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.*;
@@ -12,6 +13,9 @@ import java.util.*;
 public class FarmMarketRepository {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void newSeller(String name, String email, String username, String password, String phone) {
         String sql = "insert into seller(name, email, username, password, phone) values(:m1, :m2, :m3, :m4, :m5)";
@@ -29,6 +33,10 @@ public class FarmMarketRepository {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("m1", username);
         return jdbcTemplate.queryForObject(sql, paramMap, String.class);
+    }
+
+    public void savePassword(String password){
+        String encodedPassword = passwordEncoder.encode(password);
     }
 
 

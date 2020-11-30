@@ -145,6 +145,7 @@ public class FarmMarketController {
         return farmMarketService.getLatest();
     }
 
+
     @CrossOrigin
     @PostMapping("login")
     public String login(@RequestBody Login login) {
@@ -164,5 +165,7 @@ public class FarmMarketController {
         }
         throw new ApplicationException("vale kasutajanimi või parool");
     }
+
+
 
 }
