@@ -61,6 +61,9 @@
             <column  name="category_name"  type="varchar(250)" >
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
             </column>
+            <column  name="category_icon"  type="varchar(250)" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="product"
