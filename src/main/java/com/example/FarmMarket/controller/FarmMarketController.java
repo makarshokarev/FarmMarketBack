@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.List;
+
 
 @RestController
 public class FarmMarketController {
@@ -33,7 +35,6 @@ public class FarmMarketController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
     @CrossOrigin
     @PostMapping("newSeller")
     public PopUpWindow newSeller (@RequestBody Seller seller) {
@@ -47,7 +48,15 @@ public class FarmMarketController {
         farmMarketService.newProduct(product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
+
+
+    @GetMapping("category")
     @CrossOrigin
+    public List<Category> getAccount() {
+        List<Category> result = categoryService.getCategory();
+        return result;
+    }
+
     @PutMapping("updateSellerName")
     public void updateSellerName(@RequestBody Seller seller){
         farmMarketService.updateSellerName(seller.getId(), seller.getName());

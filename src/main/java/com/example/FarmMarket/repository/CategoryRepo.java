@@ -1,7 +1,12 @@
 package com.example.FarmMarket.repository;
 
+
 import com.example.FarmMarket.CategoryRowMapper;
 import com.example.FarmMarket.objects.Category;
+
+import com.example.FarmMarket.objects.Category;
+import com.example.FarmMarket.rowmapper.CategoryRowMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,4 +28,3 @@ public class CategoryRepo {
         return result;
     }
 }
-

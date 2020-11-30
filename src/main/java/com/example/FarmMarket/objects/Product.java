@@ -14,6 +14,7 @@ public class Product {
     private BigDecimal price;
     private BigDecimal amount;
 
+
     @Id
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
@@ -26,6 +27,7 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     public int getCategoryId() {
         return categoryId;

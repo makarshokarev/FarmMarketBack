@@ -7,6 +7,11 @@ import javax.persistence.Id;
 @Entity
 public class Seller {
 
+
+
+public class Seller {
+    private int id;
+
     private String Name;
     private String Email;
     private String Username;
@@ -84,4 +89,4 @@ public class Seller {
     public void setPhone(String phone) {
         Phone = phone;
     }
-}
+

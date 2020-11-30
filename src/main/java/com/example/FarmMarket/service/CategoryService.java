@@ -15,4 +15,7 @@ public class CategoryService {
         List<Category> result = categoryRepo.getCategory();
         return result;
     }
+
 }
+
+
