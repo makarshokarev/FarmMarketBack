@@ -1,7 +1,5 @@
 package com.example.FarmMarket.controller;
 
-
-
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Seller;
 import com.example.FarmMarket.repository.CategoryRepository;
@@ -9,6 +7,7 @@ import com.example.FarmMarket.repository.ProductRepository;
 import com.example.FarmMarket.repository.SellerRepository;
 import com.example.FarmMarket.service.CategoryService;
 import com.example.FarmMarket.service.ProductService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -22,9 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-import java.util.List;
-
-
 @RestController
 public class FarmMarketController {
     @Autowired
@@ -32,19 +28,22 @@ public class FarmMarketController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
-
     private ProductService productService;
-
+    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private SellerRepository sellerRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @CrossOrigin
     @PostMapping("newSeller")
     public PopUpWindow newSeller (@RequestBody Seller seller) {
-        farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), seller.getPassword(), seller.getPhone());
+        String rawPassword = seller.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
         return new PopUpWindow("Thank you for registration.");
     }
 
@@ -54,7 +53,6 @@ public class FarmMarketController {
         farmMarketService.newProduct(product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
-
 
     @GetMapping("category")
     @CrossOrigin
@@ -131,5 +129,6 @@ public class FarmMarketController {
     public List<Product> getLatest() {
         return farmMarketService.getLatest();
     }
+
 
 }
