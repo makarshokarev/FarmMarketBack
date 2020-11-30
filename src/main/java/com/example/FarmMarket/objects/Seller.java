@@ -4,21 +4,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public class Seller {
-
-
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
 public class Seller {
-
-
-
 
 
     private String Name;
@@ -98,4 +86,5 @@ public class Seller {
     public void setPhone(String phone) {
         Phone = phone;
     }
+}
 

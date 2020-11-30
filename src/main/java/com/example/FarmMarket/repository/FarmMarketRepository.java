@@ -1,6 +1,6 @@
 package com.example.FarmMarket.repository;
 
-import com.example.FarmMarket.ProductRowMapper;
+import com.example.FarmMarket.rowmapper.ProductRowMapper;
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Product;
 import org.springframework.beans.factory.annotation.Autowired;
