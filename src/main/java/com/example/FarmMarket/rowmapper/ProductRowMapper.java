@@ -6,14 +6,14 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductRowMapper implements RowMapper {
+public class ProductRowMapper implements RowMapper<Product> {
     @Override
-    public Object mapRow(ResultSet resultSet, int i) throws SQLException {
+    public Product mapRow(ResultSet resultSet, int i) throws SQLException {
         Product product = new Product();
         product.setId(resultSet.getInt("id"));
-        product.setCategoryId(resultSet.getInt("categoryId"));
-        product.setProductName(resultSet.getString("categoryName"));
-        product.setProductDescription(resultSet.getString("productDescription"));
+        product.setCategoryId(resultSet.getInt("category_id"));
+        product.setProductName(resultSet.getString("product_name"));
+        product.setProductDescription(resultSet.getString("product_description"));
         product.setPrice(resultSet.getBigDecimal("price"));
         product.setAmount(resultSet.getBigDecimal("amount"));
         return product;

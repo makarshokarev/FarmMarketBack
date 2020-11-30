@@ -18,7 +18,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id1;
 
     public int getId() {
         return id;

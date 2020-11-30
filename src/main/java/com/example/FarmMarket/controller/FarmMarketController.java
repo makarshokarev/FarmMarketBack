@@ -5,6 +5,7 @@ package com.example.FarmMarket.controller;
 import com.example.FarmMarket.objects.Category;
 import com.example.FarmMarket.objects.Seller;
 import com.example.FarmMarket.service.CategoryService;
+import com.example.FarmMarket.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 import com.example.FarmMarket.objects.PopUpWindow;
 import com.example.FarmMarket.objects.Product;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
 public class FarmMarketController {
@@ -22,10 +25,6 @@ public class FarmMarketController {
     private FarmMarketService farmMarketService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private SellerRepository sellerRepository;
     @Autowired
     private ProductService productService;
 
@@ -93,16 +92,5 @@ public class FarmMarketController {
         farmMarketService.updateSellerPassword(seller.getId(), seller.getPassword());
     }
 
-    @CrossOrigin
-    @GetMapping("getAllProducts")
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    @CrossOrigin
-    @GetMapping("getAllSellers")
-    public List<Seller> getAllSellers() {
-        return sellerRepository.findAll();
-    }
 
 }
