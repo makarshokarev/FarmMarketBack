@@ -24,6 +24,13 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
+    public String getPassword(String username){
+        String sql = "Select password from seller where username = :m1";
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("m1", username);
+        return jdbcTemplate.queryForObject(sql, paramMap, String.class);
+    }
+
 
     public boolean doesEmailExist(String email){
         String sql = "SELECT count(*) from seller where email = :m1";
