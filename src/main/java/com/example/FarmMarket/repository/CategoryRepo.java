@@ -22,7 +22,6 @@ public class CategoryRepo {
     public List<Category> getCategory() {
         String sql = "SELECT * FROM category";
         Map<String, Object> paramMap = new HashMap<>();
-        List<Category> result = jdbcTemplate.query(sql, paramMap, new CategoryRowMapper());
-        return result;
+        return jdbcTemplate.query(sql, paramMap, new CategoryRowMapper());
     }
 }

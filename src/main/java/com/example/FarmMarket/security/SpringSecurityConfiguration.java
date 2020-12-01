@@ -16,7 +16,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/", "/updateSellerPassword", "/login", "/newSeller", "/getLatestProducts", "/product", "/category").permitAll()
+                .antMatchers("/", "/updateSellerPassword", "/login", "/newSeller", "/getLatestProducts", "/product", "/category", "/getAllProducts","/getAllCategories" ).permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();}
 

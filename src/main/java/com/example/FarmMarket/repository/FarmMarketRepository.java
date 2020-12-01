@@ -31,7 +31,6 @@ public class FarmMarketRepository {
         return jdbcTemplate.queryForObject(sql, paramMap, String.class);
     }
 
-
     public boolean doesEmailExist(String email){
         String sql = "SELECT count(*) from seller where email = :m1";
         Map<String, String> paramMap = new HashMap<>();
@@ -56,13 +55,11 @@ public class FarmMarketRepository {
         return categoryId;
     }
 
-
     public void newProduct(int categoryId, String product_name, String product_description,
                            BigDecimal price, BigDecimal amount) {
         String sql = "insert into product (category_id, product_name, product_description, price, amount) values " +
                 "(:m1, :m2, :m3, :m4, :m5)";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", categoryId);
         paramMap.put("m1", getId(categoryId));
         paramMap.put("m2", product_name);
         paramMap.put("m3", product_description);
@@ -70,7 +67,18 @@ public class FarmMarketRepository {
         paramMap.put("m5", amount);
         jdbcTemplate.update(sql, paramMap);
     }
-
+    public void updateProduct(int id, int categoryId, String product_name, String product_description,
+                              BigDecimal price, BigDecimal amount){
+        String sql = "update product set product_name =:m1, product_description = :m2, price =:m3, amount = :m4, category_id = :m5 where id= :m6";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("m1", product_name);
+        paramMap.put("m2", product_description);
+        paramMap.put("m3", price);
+        paramMap.put("m4", amount);
+        paramMap.put("m5", categoryId);
+        paramMap.put("m6", id);
+        jdbcTemplate.update(sql, paramMap);
+    }
 
     public void updateSellerName(int ID, String newName){
         String sql = "UPDATE seller SET name =:m1 WHERE id = :m2";

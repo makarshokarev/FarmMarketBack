@@ -33,6 +33,11 @@ public class FarmMarketService {
         farmMarketRepository.newProduct(categoryId, product_name, product_description, price, amount);
     }
 
+    public void updateProduct(int id, int categoryId, String product_name, String product_description,
+                              BigDecimal price, BigDecimal amount){
+        farmMarketRepository.updateProduct(id, categoryId, product_name, product_description, price, amount);
+    }
+
     public void updateSellerName(int ID, String newName){
         farmMarketRepository.updateSellerName(ID, newName);
     }

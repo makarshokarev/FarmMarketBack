@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Date;
 import java.util.List;
 
@@ -144,8 +145,8 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PostMapping("login")
-    public String login(@RequestBody Login login) {
-        if (loginService.validate(login.getUserName(), login.getPassword())) {
+    public String login(@RequestBody Seller seller) {
+        if (loginService.validate(seller.getUsername(), seller.getPassword())) {
             Date date = new Date();
             Date expiry = new Date(date.getTime() + 1000*60*60*24);
             JwtBuilder builder = Jwts.builder()
@@ -154,11 +155,17 @@ public class FarmMarketController {
                     .setIssuer("issuer")
                     .signWith(SignatureAlgorithm.HS256,
                             "secret")
-                    .claim("usenrame", login.getUserName());
+                    .claim("usenrame", seller.getUsername());
             String jwt = builder.compact();
             return jwt;
         }
         throw new ApplicationException("vale kasutajanimi või parool");
+    }
+    @CrossOrigin
+    @PutMapping("updateProduct")
+    public PopUpWindow updateProduct(@RequestBody Product product){
+        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        return new PopUpWindow("Thank you. Product information is updated.");
     }
 
 }
