@@ -79,7 +79,7 @@
             insert into category (category_name, category_icon) values ('MEAT', 'mdi-sausage')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('DIARY', 'mdi-food-variant')
+            insert into category (category_name, category_icon) values ('DAIRY', 'mdi-food-variant')
         </sql>
         <sql>
             insert into category (category_name, category_icon) values ('VEGETABLES', 'mdi-carrot')
