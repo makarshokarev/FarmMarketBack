@@ -161,4 +161,10 @@ public class FarmMarketController {
         throw new ApplicationException("vale kasutajanimi või parool");
     }
 
+    @CrossOrigin
+    @GetMapping("searchProduct")
+    public List <Product> searchProduct (String searchWord) {
+        return farmMarketService.searchProduct(searchWord);
+    }
+
 }
