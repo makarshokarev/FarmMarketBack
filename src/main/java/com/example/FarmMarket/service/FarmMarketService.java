@@ -83,4 +83,8 @@ public class FarmMarketService {
         return lastProducts;
     }
 
+    public List<Product> searchProduct(String searchWord) {
+        return farmMarketRepository.searchProduct(searchWord);
+    }
+
 }
