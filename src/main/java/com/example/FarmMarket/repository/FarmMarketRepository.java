@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public String getPassword(String username){
+    public String getPassword(String username) {
         String sql = "Select password from seller where username = :m1";
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("m1", username);
@@ -40,7 +41,7 @@ public class FarmMarketRepository {
     }
 
 
-    public boolean doesEmailExist(String email){
+    public boolean doesEmailExist(String email) {
         String sql = "SELECT count(*) from seller where email = :m1";
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("m1", email);
@@ -48,7 +49,7 @@ public class FarmMarketRepository {
         return count > 0;
     }
 
-    public boolean doesUsernameExist(String username){
+    public boolean doesUsernameExist(String username) {
         String sql = "SELECT count(*) from seller where username = :m1";
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("m1", username);
@@ -79,14 +80,15 @@ public class FarmMarketRepository {
     }
 
 
-    public void updateSellerName(int ID, String newName){
+    public void updateSellerName(int ID, String newName) {
         String sql = "UPDATE seller SET name =:m1 WHERE id = :m2";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", newName);
         paramMap.put("m2", ID);
-        jdbcTemplate.update(sql, paramMap);}
+        jdbcTemplate.update(sql, paramMap);
+    }
 
-    public void updateSellerPersonalInformation(int ID, String personalInformation){
+    public void updateSellerPersonalInformation(int ID, String personalInformation) {
         String sql = "UPDATE seller SET personal_information =:m1 WHERE id = :m2";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", personalInformation);
@@ -94,7 +96,7 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public void updateSellerAddress(int ID, String address){
+    public void updateSellerAddress(int ID, String address) {
         String sql = "UPDATE seller SET address =:m1 WHERE id = :m2";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", address);
@@ -134,7 +136,7 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public String getName( String email) {
+    public String getName(String email) {
         String sql = "SELECT name from seller where email = :m1";
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("m1", email);
@@ -148,23 +150,31 @@ public class FarmMarketRepository {
         return jdbcTemplate.queryForObject(sql, paramMap, String.class);
     }
 
-    public List<Integer> last3ProductsID(){
+    public List<Integer> last3ProductsID() {
         String sql = "SELECT id from product ";
         Map<String, Object> paramMap = new HashMap<>();
         List<Integer> answer = new ArrayList<>();
         answer = jdbcTemplate.queryForList(sql, paramMap, Integer.class);
         Collections.sort(answer);
         List<Integer> viimased = new ArrayList<>();
-        for(int i =0; i<3; i++){
-            viimased.add(answer.get(answer.size()-1-i));
+        for (int i = 0; i < 3; i++) {
+            viimased.add(answer.get(answer.size() - 1 - i));
         }
         return viimased;
     }
 
-    public Product getLatest(int number){
+    public Product getLatest(int number) {
         String sql = "SELECT * from product where id = :m1";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", number);
         return jdbcTemplate.queryForObject(sql, paramMap, new ProductRowMapper());
     }
+
+    public List<Product> searchProduct(String searchWord) {
+        String sql = "select * from product where product_name ilike :searchWord ";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("searchWord", searchWord+"%");
+        return jdbcTemplate.query(sql, paramMap, new ProductRowMapper());
+    }
+
 }

@@ -56,17 +56,17 @@ public class FarmMarketService {
         farmMarketRepository.updateSellerEmail(ID, email);
     }
     public void updateSellerPassword(String name, String username, String email, String password){
-        if(farmMarketRepository.doesEmailExist(email)){
-            String nameInTable = farmMarketRepository.getName(email);
-            if(!nameInTable.equals(name)){
-                throw new ApplicationException("Name is incorrect");
+        if(!farmMarketRepository.doesEmailExist(email)){
+            throw new ApplicationException("Email is incorrect");}
+        String nameInTable = farmMarketRepository.getName(email);
+        if(!nameInTable.equals(name)){
+            throw new ApplicationException("Name is incorrect");
             }
-            String usernameInTable = farmMarketRepository.getUsername(email);
-            if(!usernameInTable.equals(username)){
-                throw new ApplicationException("Username is incorrect");
+        String usernameInTable = farmMarketRepository.getUsername(email);
+        if(!usernameInTable.equals(username)){
+            throw new ApplicationException("Username is incorrect");
             }
-            farmMarketRepository.updateSellerPassword(email, password);
-    }throw new ApplicationException("Email is incorrect");
+        farmMarketRepository.updateSellerPassword(email, password);
     }
 
     public List<Product> getLatest(){
@@ -76,6 +76,10 @@ public class FarmMarketService {
             lastProducts.add(farmMarketRepository.getLatest(integer));
         }
         return lastProducts;
+    }
+
+    public List<Product> searchProduct(String searchWord) {
+        return farmMarketRepository.searchProduct(searchWord);
     }
 
 }

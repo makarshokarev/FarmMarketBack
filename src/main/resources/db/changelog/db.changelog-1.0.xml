@@ -64,6 +64,9 @@
             <column  name="category_icon"  type="varchar(250)" >
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
             </column>
+            <column  name="category_picture"  type="varchar(250)" >
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="product"
@@ -76,31 +79,31 @@
            </changeSet>
     <changeSet  author=""  id="">
         <sql>
-            insert into category (category_name, category_icon) values ('MEAT', 'mdi-sausage')
+            insert into category (category_name, category_icon, category_picture) values ('MEAT', 'mdi-sausage', '/pictures/meat.jpg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('DIARY', 'mdi-food-variant')
+            insert into category (category_name, category_icon, category_picture) values ('DAIRY', 'mdi-food-variant', '/pictures/dairy.jpeg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('VEGETABLES', 'mdi-carrot')
+            insert into category (category_name, category_icon, category_picture) values ('VEGETABLES', 'mdi-carrot', '/pictures/vegetables.jpg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('FRUITS', 'mdi-apple')
+            insert into category (category_name, category_icon, category_picture) values ('FRUITS', 'mdi-apple', '/pictures/fruits.jpg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('FLOWERS', 'mdi-sprout')
+            insert into category (category_name, category_icon, category_picture) values ('FLOWERS', 'mdi-sprout', '/pictures/flowers.jpeg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('EGGS', 'mdi-egg')
+            insert into category (category_name, category_icon, category_picture) values ('EGGS', 'mdi-egg', '/pictures/eggs.jpeg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('MUSHROOMS', 'mdi-mushroom')
+            insert into category (category_name, category_icon, category_picture) values ('MUSHROOMS', 'mdi-mushroom', '/pictures/mushrooms.jpeg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('FISH', 'mdi-shark-fin')
+            insert into category (category_name, category_icon, category_picture) values ('FISH', 'mdi-shark-fin', '/pictures/fish.jpeg')
         </sql>
         <sql>
-            insert into category (category_name, category_icon) values ('OTHER', 'mdi-view-sequential')
+            insert into category (category_name, category_icon, category_picture) values ('OTHER', 'mdi-view-sequential', '/pictures/other.jpg')
         </sql>
     </changeSet>
 </databaseChangeLog>
