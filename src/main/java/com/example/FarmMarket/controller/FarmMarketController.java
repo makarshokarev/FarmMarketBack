@@ -5,16 +5,13 @@ import com.example.FarmMarket.objects.*;
 import com.example.FarmMarket.repository.CategoryRepository;
 import com.example.FarmMarket.repository.ProductRepository;
 import com.example.FarmMarket.repository.SellerRepository;
-import com.example.FarmMarket.service.CategoryService;
-import com.example.FarmMarket.service.LoginService;
-import com.example.FarmMarket.service.ProductService;
+import com.example.FarmMarket.service.*;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.tomcat.jni.Local;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.example.FarmMarket.service.FarmMarketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +41,8 @@ public class FarmMarketController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private GetSellerService getSellerService;
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -52,6 +51,13 @@ public class FarmMarketController {
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
         return new PopUpWindow("Thank you for registration.");
+    }
+
+    @CrossOrigin
+    @GetMapping("getSeller")
+    public Seller1 getSeller(){
+        Seller1 seller = getSellerService.getSeller();
+        return seller;
     }
 
     @CrossOrigin
@@ -75,8 +81,9 @@ public class FarmMarketController {
         return result;
     }
 
+    @CrossOrigin
     @PutMapping("updateSellerName")
-    public void updateSellerName(@RequestBody Seller seller) {
+    public void updateSellerName(@RequestBody Seller1 seller) {
         farmMarketService.updateSellerName(seller.getId(), seller.getName());
     }
 

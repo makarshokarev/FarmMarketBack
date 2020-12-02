@@ -70,7 +70,6 @@ public class FarmMarketRepository {
         String sql = "insert into product (category_id, product_name, product_description, price, amount) values " +
                 "(:m1, :m2, :m3, :m4, :m5)";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", categoryId);
         paramMap.put("m1", getId(categoryId));
         paramMap.put("m2", product_name);
         paramMap.put("m3", product_description);
