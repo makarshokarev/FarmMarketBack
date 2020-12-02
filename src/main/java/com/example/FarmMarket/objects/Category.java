@@ -14,6 +14,15 @@ public class Category {
     private Integer id;
     private String categoryName;
     private String categoryIcon;
+    private String categoryPicture;
+
+    public String getCategoryPicture() {
+        return categoryPicture;
+    }
+
+    public void setCategoryPicture(String categoryPicture) {
+        this.categoryPicture = categoryPicture;
+    }
 
     public String getCategoryIcon() {
         return categoryIcon;
