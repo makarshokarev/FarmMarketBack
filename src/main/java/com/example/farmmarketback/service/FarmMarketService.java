@@ -4,16 +4,22 @@ import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.objects.Category;
 import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.objects.Seller;
+import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.FarmMarketRepository;
+import com.example.farmmarketback.repository.SellerRepository;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FarmMarketService {
@@ -21,6 +27,10 @@ public class FarmMarketService {
     private FarmMarketRepository farmMarketRepository;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private SellerRepository sellerRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public void newSeller(String name, String email,String username, String password, String phone) {
         if(farmMarketRepository.doesEmailExist(email)){
@@ -117,5 +127,14 @@ public class FarmMarketService {
     public List<Product> searchProduct(String searchWord) {
         return farmMarketRepository.searchProduct(searchWord);
     }
+
+    @Transactional(readOnly = true)
+    public Seller getById(Integer id) {
+        Optional<Seller> seller_entityOp = sellerRepository.findById(id);
+        Seller seller = seller_entityOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
+        sellerRepository.niceShortNameForFunction("midagi");
+        return seller;
+    }
+
 
 }

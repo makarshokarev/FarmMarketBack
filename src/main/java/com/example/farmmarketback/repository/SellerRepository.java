@@ -1,7 +1,15 @@
 package com.example.farmmarketback.repository;
 
-import com.example.farmmarketback.objects.Seller_entity;
+import com.example.farmmarketback.objects.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface SellerRepository extends JpaRepository<Seller_entity,Integer> {
+import java.util.List;
+
+public interface SellerRepository extends JpaRepository<Seller,Integer> {
+
+    @Query(value = "SELECT s FROM Seller s WHERE s.name = :midagi")
+    List<Seller> niceShortNameForFunction(@Param("midagi") String midagi);
+
 }
