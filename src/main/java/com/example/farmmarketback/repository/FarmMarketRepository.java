@@ -182,7 +182,7 @@ public class FarmMarketRepository {
         Collections.sort(answer);
         List<Integer> viimased = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            viimased.add(answer.get(answer.size() - i));
+            viimased.add(answer.get(answer.size() - 1 - i));
         }
         return viimased;
     }
