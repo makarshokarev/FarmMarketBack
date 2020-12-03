@@ -52,6 +52,10 @@
             <column  name="category_id"  type="int">
                 <constraints  nullable="false"  primaryKey="false"  unique="false"/>
             </column>
+            <column  name="seller_id"  type="int">
+                <constraints  nullable="false"  primaryKey="false"  unique="false"/>
+            </column>
+
         </createTable>
 
         <createTable  tableName="category">
@@ -73,6 +77,13 @@
                                  baseColumnNames="category_id"
                                  constraintName="fk_category_product"
                                  referencedTableName="category"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="seller_id"
+                                 constraintName="fk_seller_product"
+                                 referencedTableName="seller"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
 
