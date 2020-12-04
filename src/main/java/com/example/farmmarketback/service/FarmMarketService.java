@@ -16,7 +16,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -123,35 +122,34 @@ public class FarmMarketService {
         return farmMarketRepository.searchProduct(searchWord);
     }
 
-    @Transactional(readOnly = true)
+
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
         sellerRepository.niceShortNameForFunction("midagi");
         return seller;
     }
-    @Transactional(readOnly = true)
+
     public Product getProductById (Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
         Product product = productOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        productRepository.findAllByProductName("midagi");
+        productRepository.findAllByProductName("productName");
         return product;
     }
 
-    @Transactional(readOnly = true)
+
     public Category getCategoryById (Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
         Category category = categoryOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        categoryRepository.findAllByCategoryName("midagi");
+        categoryRepository.findAllByCategoryName("categoryName");
         return category;
     }
 
     public List<ProductGetFullInfo> findAllProducts() {
         int i = productRepository.findAll().size();
-        Product product = new Product();
         List<ProductGetFullInfo> allProducts = new ArrayList<>();
         for(int j=1; j<=i; j++) {
-            product = getProductById(j);
+            Product product = getProductById(j);
             allProducts.add(new ProductGetFullInfo(product));
         }
         return  allProducts;
@@ -159,10 +157,9 @@ public class FarmMarketService {
 
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
-        Category category = new Category();
         List<CategoriesGetAll> allCategories = new ArrayList<>();
         for(int j=1; j<=i; j++) {
-            category = getCategoryById(j);
+            Category category = getCategoryById(j);
             allCategories.add(new CategoriesGetAll(category));
         }
         return  allCategories;
