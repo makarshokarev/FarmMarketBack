@@ -1,6 +1,6 @@
-package com.example.farmmarketback.Responses;
+package com.example.farmmarketback.responses;
 
-import com.example.farmmarketback.objects.Category;
+import com.example.farmmarketback.entity.Category;
 
 public class CategoriesGetAll {
     private String categoryName;

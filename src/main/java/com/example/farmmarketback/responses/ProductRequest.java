@@ -1,22 +1,35 @@
-package com.example.farmmarketback.objects;
+package com.example.farmmarketback.responses;
 
+import com.example.farmmarketback.entity.Category;
+import com.example.farmmarketback.entity.Seller;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-public class ProductResponse {
-    private int id;
+
+public class ProductRequest {
+
+    private Integer id;
+    private Integer categoryId;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
-    private int categoryId;
-    private int sellerId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getProductName() {
@@ -49,21 +62,5 @@ public class ProductResponse {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public int getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
     }
 }

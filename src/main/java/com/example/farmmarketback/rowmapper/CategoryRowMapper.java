@@ -1,6 +1,6 @@
 package com.example.farmmarketback.rowmapper;
 
-import com.example.farmmarketback.objects.Category;
+import com.example.farmmarketback.entity.Category;
 
 import org.springframework.jdbc.core.RowMapper;
 
