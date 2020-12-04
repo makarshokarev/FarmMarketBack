@@ -1,5 +1,7 @@
 package com.example.farmmarketback.controller;
 
+import com.example.farmmarketback.Responses.CategoriesGetAll;
+import com.example.farmmarketback.Responses.ProductGetFullInfo;
 import com.example.farmmarketback.Responses.SellerGetDetailInfo;
 import com.example.farmmarketback.objects.*;
 import com.example.farmmarketback.repository.CategoryRepository;
@@ -58,7 +60,7 @@ public class FarmMarketController {
     public PopUpWindow newProduct(Authentication authentication, @RequestBody Product product) {
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
-        farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.newProduct(sellerId, product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
 
@@ -122,26 +124,6 @@ public class FarmMarketController {
     }
 
     @CrossOrigin
-    @GetMapping("getAllProducts")
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    @CrossOrigin
-    @GetMapping("getAllSellers")
-    public List<Seller> getAllSellers() {
-        return sellerRepository.findAll();
-    }
-
-
-    @CrossOrigin
-    @GetMapping("getAllCategories")
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-
-    @CrossOrigin
     @GetMapping("getLatestProducts")
     public List<Product> getLatest() {
         return farmMarketService.getLatest();
@@ -156,7 +138,7 @@ public class FarmMarketController {
     @CrossOrigin
     @PutMapping("updateProduct")
     public PopUpWindow updateProduct(@RequestBody Product product){
-        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.updateProduct(product.getId(), product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("Thank you. Product information is updated.");
     }
 
@@ -166,9 +148,30 @@ public class FarmMarketController {
         return farmMarketService.searchProduct(searchWord);
     }
 
-    @GetMapping("sellerInformation")
+    @CrossOrigin
+    @GetMapping("sellerInformationById")
     public SellerGetDetailInfo sellerGetDetailInfo(Integer id){
-        Seller seller = farmMarketService.getById(id);
+        Seller seller = farmMarketService.getSellerById(id);
         return new SellerGetDetailInfo(seller);
     }
+
+    @CrossOrigin
+    @GetMapping("productInformationById")
+    public ProductGetFullInfo productGetFullInfo(Integer id){
+        Product product = farmMarketService.getProductById(id);
+        return new ProductGetFullInfo(product);
+    }
+
+    @CrossOrigin
+    @GetMapping("findAllProducts")
+    public List<ProductGetFullInfo> findAllProducts(){
+        return farmMarketService.findAllProducts();
+    }
+
+    @CrossOrigin
+    @GetMapping("findAllCategories")
+    public List<CategoriesGetAll> findAllCategories(){
+        return farmMarketService.findAllCategories();
+    }
+
 }

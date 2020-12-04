@@ -12,6 +12,21 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+    private String productName;
+    private String productDescription;
+    private BigDecimal price;
+    private BigDecimal amount;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Seller getSeller() {
         return seller;
@@ -21,21 +36,6 @@ public class Product {
         this.seller = seller;
         return this;
     }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    private String productName;
-    private String productDescription;
-    private BigDecimal price;
-    private BigDecimal amount;
-    private Integer categoryId;
-
 
     public Integer getId() {
         return id;

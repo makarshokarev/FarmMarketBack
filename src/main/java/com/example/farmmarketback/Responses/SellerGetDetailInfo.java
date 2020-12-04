@@ -1,5 +1,6 @@
 package com.example.farmmarketback.Responses;
 
+import com.example.farmmarketback.objects.Product;
 import com.example.farmmarketback.objects.Seller;
 
 public class SellerGetDetailInfo {

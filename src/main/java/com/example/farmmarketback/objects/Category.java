@@ -1,9 +1,7 @@
 package com.example.farmmarketback.objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 
@@ -15,6 +13,17 @@ public class Category {
     private String categoryName;
     private String categoryIcon;
     private String categoryPicture;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public String getCategoryPicture() {
         return categoryPicture;
