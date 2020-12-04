@@ -1,11 +1,9 @@
 package com.example.farmmarketback.objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-public class Seller_entity {
+public class Seller {
 
 
     private String name;
@@ -21,6 +19,17 @@ public class Seller_entity {
             GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToMany(mappedBy = "seller")
+    private List<Product> products;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public Seller setProducts(List<Product> products) {
+        this.products = products;
+        return this;
+    }
 
     public int getId() {
         return id;

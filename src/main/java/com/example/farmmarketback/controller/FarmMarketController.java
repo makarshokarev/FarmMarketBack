@@ -1,17 +1,15 @@
 package com.example.farmmarketback.controller;
 
-import com.example.farmmarketback.exception.ApplicationException;
+import com.example.farmmarketback.Responses.CategoriesGetAll;
+import com.example.farmmarketback.Responses.ProductGetFullInfo;
+import com.example.farmmarketback.Responses.SellerGetDetailInfo;
 import com.example.farmmarketback.objects.*;
 import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
 import com.example.farmmarketback.security.MyUser;
 import com.example.farmmarketback.service.*;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -45,7 +42,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PostMapping("newSeller")
-    public PopUpWindow newSeller(@RequestBody Seller_entity seller) {
+    public PopUpWindow newSeller(@RequestBody Seller seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
@@ -63,7 +60,7 @@ public class FarmMarketController {
     public PopUpWindow newProduct(Authentication authentication, @RequestBody Product product) {
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
-        farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.newProduct(sellerId, product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
 
@@ -89,62 +86,42 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSellerEmail")
-    public void updateSellerEmail(@RequestBody Seller_entity seller) {
+    public void updateSellerEmail(@RequestBody Seller seller) {
         farmMarketService.updateSellerEmail(seller.getId(), seller.getEmail());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerUsername")
-    public void updateSellerUsername(@RequestBody Seller_entity seller) {
+    public void updateSellerUsername(@RequestBody Seller seller) {
         farmMarketService.updateSellerUsername(seller.getId(), seller.getUsername());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPersonalInformation")
-    public void updateSellerPersonalInformation(@RequestBody Seller_entity seller) {
+    public void updateSellerPersonalInformation(@RequestBody Seller seller) {
         farmMarketService.updateSellerPersonalInformation(seller.getId(), seller.getPersonalInformation());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerAddress")
-    public void updateSellerAddress(@RequestBody Seller_entity seller) {
+    public void updateSellerAddress(@RequestBody Seller seller) {
         farmMarketService.updateSellerAddress(seller.getId(), seller.getAddress());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPhone")
-    public void updateSellerPhone(@RequestBody Seller_entity seller) {
+    public void updateSellerPhone(@RequestBody Seller seller) {
         farmMarketService.updateSellerPhone(seller.getId(), seller.getPhone());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPassword")
-    public PopUpWindow updateSellerPassword(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerPassword(@RequestBody Seller seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.updateSellerPassword(seller.getName(), seller.getUsername(), seller.getEmail(), encodedPassword);
         return new PopUpWindow("Your Password is updated");
     }
-
-    @CrossOrigin
-    @GetMapping("getAllProducts")
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    @CrossOrigin
-    @GetMapping("getAllSellers")
-    public List<Seller_entity> getAllSellers() {
-        return sellerRepository.findAll();
-    }
-
-
-    @CrossOrigin
-    @GetMapping("getAllCategories")
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
-    }
-
 
     @CrossOrigin
     @GetMapping("getLatestProducts")
@@ -161,7 +138,7 @@ public class FarmMarketController {
     @CrossOrigin
     @PutMapping("updateProduct")
     public PopUpWindow updateProduct(@RequestBody Product product){
-        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.updateProduct(product.getId(), product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("Thank you. Product information is updated.");
     }
 
@@ -171,5 +148,30 @@ public class FarmMarketController {
         return farmMarketService.searchProduct(searchWord);
     }
 
+    @CrossOrigin
+    @GetMapping("sellerInformationById")
+    public SellerGetDetailInfo sellerGetDetailInfo(Integer id){
+        Seller seller = farmMarketService.getSellerById(id);
+        return new SellerGetDetailInfo(seller);
+    }
+
+    @CrossOrigin
+    @GetMapping("productInformationById")
+    public ProductGetFullInfo productGetFullInfo(Integer id){
+        Product product = farmMarketService.getProductById(id);
+        return new ProductGetFullInfo(product);
+    }
+
+    @CrossOrigin
+    @GetMapping("findAllProducts")
+    public List<ProductGetFullInfo> findAllProducts(){
+        return farmMarketService.findAllProducts();
+    }
+
+    @CrossOrigin
+    @GetMapping("findAllCategories")
+    public List<CategoriesGetAll> findAllCategories(){
+        return farmMarketService.findAllCategories();
+    }
 
 }
