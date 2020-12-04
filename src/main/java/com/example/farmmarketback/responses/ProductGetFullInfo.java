@@ -1,6 +1,6 @@
-package com.example.farmmarketback.Responses;
+package com.example.farmmarketback.responses;
 
-import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.entity.Product;
 
 import java.math.BigDecimal;
 

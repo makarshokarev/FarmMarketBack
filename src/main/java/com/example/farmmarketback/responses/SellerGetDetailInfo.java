@@ -1,7 +1,6 @@
-package com.example.farmmarketback.Responses;
+package com.example.farmmarketback.responses;
 
-import com.example.farmmarketback.objects.Product;
-import com.example.farmmarketback.objects.Seller;
+import com.example.farmmarketback.entity.Seller;
 
 public class SellerGetDetailInfo {
     private String name;

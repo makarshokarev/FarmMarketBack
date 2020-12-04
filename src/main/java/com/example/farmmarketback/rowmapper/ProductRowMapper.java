@@ -1,6 +1,6 @@
 package com.example.farmmarketback.rowmapper;
 
-import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.entity.Product;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

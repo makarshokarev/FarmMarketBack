@@ -1,4 +1,4 @@
-package com.example.farmmarketback.objects;
+package com.example.farmmarketback.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

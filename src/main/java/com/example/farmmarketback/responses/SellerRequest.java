@@ -1,41 +1,20 @@
-package com.example.farmmarketback.objects;
-import javax.persistence.*;
-import java.util.List;
+package com.example.farmmarketback.responses;
 
-@Entity
-public class Seller {
-
-
+public class SellerRequest {
+    private Integer id;
     private String name;
     private String email;
     private String username;
-    private String password;
     private String personalInformation;
     private String address;
     private String phone;
+    private String password;
 
-    @Id
-    @GeneratedValue(strategy =
-            GenerationType.IDENTITY)
-    private Integer id;
-
-    @OneToMany(mappedBy = "seller")
-    private List<Product> products;
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public Seller setProducts(List<Product> products) {
-        this.products = products;
-        return this;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -63,14 +42,6 @@ public class Seller {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getPersonalInformation() {
         return personalInformation;
     }
@@ -94,5 +65,12 @@ public class Seller {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-}
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}

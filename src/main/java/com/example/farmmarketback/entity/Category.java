@@ -1,4 +1,6 @@
-package com.example.farmmarketback.objects;
+package com.example.farmmarketback.entity;
+
+import com.example.farmmarketback.entity.Product;
 
 import javax.persistence.*;
 import java.util.List;

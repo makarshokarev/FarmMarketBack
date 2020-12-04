@@ -1,19 +1,13 @@
 package com.example.farmmarketback.controller;
 
-import com.example.farmmarketback.Responses.CategoriesGetAll;
-import com.example.farmmarketback.Responses.ProductGetFullInfo;
-import com.example.farmmarketback.Responses.SellerGetDetailInfo;
+import com.example.farmmarketback.responses.*;
+import com.example.farmmarketback.entity.Category;
+import com.example.farmmarketback.entity.Product;
+import com.example.farmmarketback.entity.Seller;
 import com.example.farmmarketback.objects.*;
-import com.example.farmmarketback.repository.CategoryRepository;
-import com.example.farmmarketback.repository.ProductRepository;
-import com.example.farmmarketback.repository.SellerRepository;
 import com.example.farmmarketback.security.MyUser;
 import com.example.farmmarketback.service.*;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.InternetAddress;
 
@@ -38,33 +30,26 @@ public class FarmMarketController {
     @Autowired
     private FarmMarketService farmMarketService;
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private SellerRepository sellerRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UploadService uploadService;
+
 
     @CrossOrigin
     @PostMapping("photos/upload")
     public void uploadPhoto(@RequestParam (value = "photos") MultipartFile file) throws IOException {
          byte [] a = file.getBytes();
-         uploadService.uploadFile(a);
+         farmMarketService.uploadFile(a);
                 // teha tabel 'file; with column 'bytea'
     }
 
     @CrossOrigin
     @PostMapping("newSeller")
-    public PopUpWindow newSeller(@RequestBody Seller seller) {
+    public PopUpWindow newSeller(@RequestBody SellerRequest seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
         return new PopUpWindow("Thank you for registration.");
     }
-
+/*
     @CrossOrigin
     @GetMapping("getSeller")
     public SellerResponse getSeller(Authentication authentication){
@@ -72,13 +57,13 @@ public class FarmMarketController {
         int sellerId = userDetails.getId();
         return farmMarketService.getSeller(sellerId);
     }
-
+*/
     @CrossOrigin
     @PostMapping("newProduct")
-    public PopUpWindow newProduct(Authentication authentication, @RequestBody Product product) {
+    public PopUpWindow newProduct(Authentication authentication, @RequestBody ProductRequest product) {
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
-        farmMarketService.newProduct(sellerId, product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
 
@@ -98,7 +83,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSeller")
-    public PopUpWindow updateSeller(@RequestBody Seller seller) {
+    public PopUpWindow updateSeller(@RequestBody SellerRequest seller) {
         farmMarketService.updateSeller(seller.getId(), seller.getName(), seller.getEmail(), seller.getAddress(), seller.getPhone(), seller.getPersonalInformation());
         return new PopUpWindow("Your info changed.");
 
@@ -106,7 +91,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSellerPassword")
-    public PopUpWindow updateSellerPassword(@RequestBody Seller seller) {
+    public PopUpWindow updateSellerPassword(@RequestBody SellerRequest seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.updateSellerPassword(seller.getName(), seller.getUsername(), seller.getEmail(), encodedPassword);
@@ -127,8 +112,8 @@ public class FarmMarketController {
     }
     @CrossOrigin
     @PutMapping("updateProduct")
-    public PopUpWindow updateProduct(@RequestBody Product product){
-        farmMarketService.updateProduct(product.getId(), product.getCategory().getId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+    public PopUpWindow updateProduct(@RequestBody ProductRequest product){
+        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
         return new PopUpWindow("Thank you. Product information is updated.");
     }
 

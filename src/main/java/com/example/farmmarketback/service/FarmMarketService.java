@@ -1,14 +1,13 @@
 package com.example.farmmarketback.service;
 
-import com.example.farmmarketback.Responses.CategoriesGetAll;
-import com.example.farmmarketback.Responses.ProductGetFullInfo;
+import com.example.farmmarketback.responses.CategoriesGetAll;
+import com.example.farmmarketback.responses.ProductGetFullInfo;
 import com.example.farmmarketback.exception.ApplicationException;
-import com.example.farmmarketback.objects.Category;
+import com.example.farmmarketback.entity.Category;
 import com.example.farmmarketback.objects.Login;
-import com.example.farmmarketback.objects.Product;
-import com.example.farmmarketback.objects.Seller;
+import com.example.farmmarketback.entity.Product;
+import com.example.farmmarketback.entity.Seller;
 import com.example.farmmarketback.repository.CategoryRepository;
-import com.example.farmmarketback.objects.SellerResponse;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
@@ -73,11 +72,11 @@ public class FarmMarketService {
     public List<Product> getProductBySeller(int sellerId){
         return farmMarketRepository.getProductBySeller(sellerId);
     }
-
+/*
     public SellerResponse getSeller(int sellerId){
         return farmMarketRepository.getSeller(sellerId);
     }
-
+*/
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
                            BigDecimal price, BigDecimal amount) {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
@@ -168,6 +167,9 @@ public class FarmMarketService {
         }
         return  allCategories;
 
+    }
+    public void uploadFile(byte [] file){
+        farmMarketRepository.uploadFile(file);
     }
 
 }
