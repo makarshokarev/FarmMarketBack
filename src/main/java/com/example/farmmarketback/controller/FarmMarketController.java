@@ -38,10 +38,6 @@ public class FarmMarketController {
     @Autowired
     private FarmMarketService farmMarketService;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private SellerRepository sellerRepository;
@@ -49,8 +45,6 @@ public class FarmMarketController {
     private CategoryRepository categoryRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private GetSellerService getSellerService;
     @Autowired
     private UploadService uploadService;
 
@@ -73,10 +67,10 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("getSeller")
-    public Seller1 getSeller(Authentication authentication){
+    public SellerResponse getSeller(Authentication authentication){
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
-        return getSellerService.getSeller(sellerId);
+        return farmMarketService.getSeller(sellerId);
     }
 
     @CrossOrigin

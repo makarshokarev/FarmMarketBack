@@ -74,8 +74,8 @@ public class FarmMarketService {
         return farmMarketRepository.getProductBySeller(sellerId);
     }
 
-    public SellerResponse getSeller(){
-        return farmMarketRepository.getSeller();
+    public SellerResponse getSeller(int sellerId){
+        return farmMarketRepository.getSeller(sellerId);
     }
 
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,

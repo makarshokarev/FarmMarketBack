@@ -68,10 +68,10 @@ public class FarmMarketRepository {
         return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
     }
 
-    public SellerResponse getSeller(){
+    public SellerResponse getSeller(int sellerId){
         String sql = "SELECT * FROM seller WHERE id = :m1";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", 1);
+        paramMap.put("m1", sellerId);
         return jdbcTemplate.queryForObject(sql, paramMap, new SellerRowMapper());
     }
 
