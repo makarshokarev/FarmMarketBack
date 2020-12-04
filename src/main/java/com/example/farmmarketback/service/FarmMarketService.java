@@ -1,19 +1,28 @@
 package com.example.farmmarketback.service;
 
+import com.example.farmmarketback.Responses.CategoriesGetAll;
+import com.example.farmmarketback.Responses.ProductGetFullInfo;
 import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.objects.Category;
 import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.objects.Seller;
+import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.FarmMarketRepository;
+import com.example.farmmarketback.repository.ProductRepository;
+import com.example.farmmarketback.repository.SellerRepository;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FarmMarketService {
@@ -21,6 +30,12 @@ public class FarmMarketService {
     private FarmMarketRepository farmMarketRepository;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private SellerRepository sellerRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public void newSeller(String name, String email,String username, String password, String phone) {
         if(farmMarketRepository.doesEmailExist(email)){
@@ -116,6 +131,52 @@ public class FarmMarketService {
 
     public List<Product> searchProduct(String searchWord) {
         return farmMarketRepository.searchProduct(searchWord);
+    }
+
+    @Transactional(readOnly = true)
+    public Seller getSellerById(Integer id) {
+        Optional<Seller> sellerOp = sellerRepository.findById(id);
+        Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
+        sellerRepository.niceShortNameForFunction("midagi");
+        return seller;
+    }
+    @Transactional(readOnly = true)
+    public Product getProductById (Integer id) {
+        Optional<Product> productOp = productRepository.findById(id);
+        Product product = productOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
+        productRepository.findAllByProductName("midagi");
+        return product;
+    }
+
+    @Transactional(readOnly = true)
+    public Category getCategoryById (Integer id) {
+        Optional<Category> categoryOp = categoryRepository.findById(id);
+        Category category = categoryOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
+        categoryRepository.findAllByCategoryName("midagi");
+        return category;
+    }
+
+    public List<ProductGetFullInfo> findAllProducts() {
+        int i = productRepository.findAll().size();
+        Product product = new Product();
+        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+        for(int j=1; j<=i; j++) {
+            product = getProductById(j);
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return  allProducts;
+    }
+
+    public List<CategoriesGetAll> findAllCategories() {
+        int i = categoryRepository.findAll().size();
+        Category category = new Category();
+        List<CategoriesGetAll> allCategories = new ArrayList<>();
+        for(int j=1; j<=i; j++) {
+            category = getCategoryById(j);
+            allCategories.add(new CategoriesGetAll(category));
+        }
+        return  allCategories;
+
     }
 
 }

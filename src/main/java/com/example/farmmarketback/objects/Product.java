@@ -1,9 +1,6 @@
 package com.example.farmmarketback.objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -12,23 +9,33 @@ public class Product {
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
     private Integer id;
-    private Integer categoryId;
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
 
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public Product setSeller(Seller seller) {
+        this.seller = seller;
+        return this;
+    }
 
     public Integer getId() {
         return id;
@@ -37,8 +44,6 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
-
-
 
 
     public String getProductName() {
