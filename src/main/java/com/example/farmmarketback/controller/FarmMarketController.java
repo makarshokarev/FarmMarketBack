@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,16 @@ public class FarmMarketController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private GetSellerService getSellerService;
+    @Autowired
+    private UploadService uploadService;
+
+    @CrossOrigin
+    @PostMapping("photos/upload")
+    public void uploadPhoto(@RequestParam (value = "photos") MultipartFile file) throws IOException {
+         byte [] a = file.getBytes();
+         uploadService.uploadFile(a);
+                // teha tabel 'file; with column 'bytea'
+    }
 
     @CrossOrigin
     @PostMapping("newSeller")
@@ -84,44 +96,10 @@ public class FarmMarketController {
     }
 
     @CrossOrigin
-    @PutMapping("updateSellerName")
-    public PopUpWindow updateSellerName(@RequestBody Seller1 seller) {
-        farmMarketService.updateSellerName(seller.getId(), seller.getName());
-        return new PopUpWindow("Changed name to:" + seller.getName());
-    }
-
-    @CrossOrigin
-    @PutMapping("updateSellerEmail")
-    public PopUpWindow updateSellerEmail(@RequestBody Seller_entity seller) {
-        farmMarketService.updateSellerEmail(seller.getId(), seller.getEmail());
-        return new PopUpWindow("Changed Email to: " + seller.getEmail());
-    }
-
-    @CrossOrigin
-    @PutMapping("updateSellerUsername")
-    public void updateSellerUsername(@RequestBody Seller_entity seller) {
-        farmMarketService.updateSellerUsername(seller.getId(), seller.getUsername());
-    }
-
-    @CrossOrigin
-    @PutMapping("updateSellerPersonalInformation")
-    public PopUpWindow updateSellerPersonalInformation(@RequestBody Seller_entity seller) {
-        farmMarketService.updateSellerPersonalInformation(seller.getId(), seller.getPersonalInformation());
-        return new PopUpWindow("Changed Personal Information");
-    }
-
-    @CrossOrigin
-    @PutMapping("updateSellerAddress")
-    public PopUpWindow updateSellerAddress(@RequestBody Seller_entity seller) {
-        farmMarketService.updateSellerAddress(seller.getId(), seller.getAddress());
-        return new PopUpWindow("Changed Address to: " + seller.getAddress());
-    }
-
-    @CrossOrigin
-    @PutMapping("updateSellerPhone")
-    public PopUpWindow updateSellerPhone(@RequestBody Seller_entity seller) {
-        farmMarketService.updateSellerPhone(seller.getId(), seller.getPhone());
-        return new PopUpWindow("Changed phone to: " + seller.getPhone());
+    @PutMapping("updateSeller")
+    public PopUpWindow updateSeller(@RequestBody Seller_entity seller) {
+        farmMarketService.updateSeller(seller.getId(), seller.getName(), seller.getEmail(), seller.getAddress(), seller.getPhone(), seller.getPersonalInformation());
+        return new PopUpWindow("Your info changed.");
     }
 
     @CrossOrigin

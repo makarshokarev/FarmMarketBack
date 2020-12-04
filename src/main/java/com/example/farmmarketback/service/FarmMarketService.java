@@ -68,28 +68,28 @@ public class FarmMarketService {
         farmMarketRepository.updateProduct(id, categoryId, productName, productDescription, price, amount);
     }
 
-    public void updateSellerName(int id, String newName){
-        farmMarketRepository.updateSellerName(id, newName);
+    public void updateSeller(int id, String name, String email, String address, String personalInformation, String phone){
+        farmMarketRepository.updateSeller(id, name, email, address, personalInformation, phone);
     }
 
-    public void updateSellerUsername(int id, String username){
-        farmMarketRepository.updateSellerUsername(id, username);
-    }
-
-    public void updateSellerPersonalInformation(int id, String personalInformation){
-        farmMarketRepository.updateSellerPersonalInformation(id, personalInformation);
-    }
-
-    public void updateSellerAddress(int id, String address){
-        farmMarketRepository.updateSellerAddress(id, address);
-    }
-    public void updateSellerPhone(int id, String phone){
-        farmMarketRepository.updateSellerPhone(id, phone);
-    }
-
-    public void updateSellerEmail(int id, String email){
-        farmMarketRepository.updateSellerEmail(id, email);
-    }
+//    public void updateSellerUsername(int id, String username){
+//        farmMarketRepository.updateSellerUsername(id, username);
+//    }
+//
+//    public void updateSellerPersonalInformation(int id, String personalInformation){
+//        farmMarketRepository.updateSellerPersonalInformation(id, personalInformation);
+//    }
+//
+//    public void updateSellerAddress(int id, String address){
+//        farmMarketRepository.updateSellerAddress(id, address);
+//    }
+//    public void updateSellerPhone(int id, String phone){
+//        farmMarketRepository.updateSellerPhone(id, phone);
+//    }
+//
+//    public void updateSellerEmail(int id, String email){
+//        farmMarketRepository.updateSellerEmail(id, email);
+//    }
     public void updateSellerPassword(String name, String username, String email, String password){
         if(!farmMarketRepository.doesEmailExist(email)){
             throw new ApplicationException("Email is incorrect");}
