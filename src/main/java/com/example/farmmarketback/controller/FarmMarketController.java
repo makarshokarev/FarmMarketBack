@@ -9,7 +9,11 @@ import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
 import com.example.farmmarketback.security.MyUser;
 import com.example.farmmarketback.service.*;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
 
 
 @RestController
@@ -82,12 +91,12 @@ public class FarmMarketController {
     @GetMapping("category")
     @CrossOrigin
     public List<Category> getAccount() {
-        return categoryService.getCategory();
+        return farmMarketService.getCategory();
     }
 
     @CrossOrigin
     @GetMapping("product")
-    public List<Product> getProduct(Authentication authentication) {
+    public List<Product> getProductBySeller(Authentication authentication) {
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
         return farmMarketService.getProductBySeller(sellerId);
@@ -95,7 +104,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSeller")
-    public PopUpWindow updateSeller(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSeller(@RequestBody Seller seller) {
         farmMarketService.updateSeller(seller.getId(), seller.getName(), seller.getEmail(), seller.getAddress(), seller.getPhone(), seller.getPersonalInformation());
         return new PopUpWindow("Your info changed.");
 
@@ -159,6 +168,28 @@ public class FarmMarketController {
     @GetMapping("findAllCategories")
     public List<CategoriesGetAll> findAllCategories(){
         return farmMarketService.findAllCategories();
+    }
+    @CrossOrigin
+    @PostMapping("contactSeller")
+    public void sendEmail() throws MessagingException {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+
+       Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("farmmarketAMI", "FarmMarket2020");
+            } });
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("anna.lazarenkova@gmail.com"));
+        message.setSubject("Test email");
+        message.setText("Vali IT test");
+        Transport.send(message);
+
     }
 
 }

@@ -1,8 +1,11 @@
 package com.example.farmmarketback.repository;
 
+import com.example.farmmarketback.objects.Category;
+import com.example.farmmarketback.objects.SellerResponse;
 import com.example.farmmarketback.rowmapper.CategoryRowMapper;
 import com.example.farmmarketback.rowmapper.ProductRowMapper;
 import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.rowmapper.SellerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,11 +67,25 @@ public class FarmMarketRepository {
         paramMap.put("m1", catId);
         return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
     }
+
+    public SellerResponse getSeller(){
+        String sql = "SELECT * FROM seller WHERE id = :m1";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("m1", 1);
+        return jdbcTemplate.queryForObject(sql, paramMap, new SellerRowMapper());
+    }
+
     public int getSellerId(String username) {
         Map<String, Object> paramMap = new HashMap<>();
         String sql1 = "SELECT id FROM seller WHERE username = :m1";
         paramMap.put("m1", username);
         return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
+    }
+
+    public List<Category> getCategory() {
+        String sql = "SELECT * FROM category";
+        Map<String, Object> paramMap = new HashMap<>();
+        return jdbcTemplate.query(sql, paramMap, new CategoryRowMapper());
     }
 
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
@@ -140,14 +157,14 @@ public class FarmMarketRepository {
         return jdbcTemplate.queryForObject(sql, paramMap, String.class);
     }
 
-    public List<Integer> last3ProductsID(int number) {
+    public List<Integer> last3ProductsID() {
         String sql = "SELECT id from product ";
         Map<String, Object> paramMap = new HashMap<>();
         List<Integer> answer = jdbcTemplate.queryForList(sql, paramMap, Integer.class);
         Collections.sort(answer);
         List<Integer> viimased = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-            viimased.add(answer.get(answer.size() - 1 - i));
+        for (int i = 0; i < 3; i++) {
+            viimased.add(answer.get(answer.size() - i));
         }
         return viimased;
     }

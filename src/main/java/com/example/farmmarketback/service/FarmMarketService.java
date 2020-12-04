@@ -8,6 +8,7 @@ import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.objects.Product;
 import com.example.farmmarketback.objects.Seller;
 import com.example.farmmarketback.repository.CategoryRepository;
+import com.example.farmmarketback.objects.SellerResponse;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
@@ -73,9 +74,17 @@ public class FarmMarketService {
         return farmMarketRepository.getProductBySeller(sellerId);
     }
 
+    public SellerResponse getSeller(){
+        return farmMarketRepository.getSeller();
+    }
+
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
                            BigDecimal price, BigDecimal amount) {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
+    }
+
+    public List<Category> getCategory(){
+        return farmMarketRepository.getCategory();
     }
 
     public void updateProduct(int id, int categoryId, String productName, String productDescription,
@@ -87,24 +96,7 @@ public class FarmMarketService {
         farmMarketRepository.updateSeller(id, name, email, address, personalInformation, phone);
     }
 
-//    public void updateSellerUsername(int id, String username){
-//        farmMarketRepository.updateSellerUsername(id, username);
-//    }
-//
-//    public void updateSellerPersonalInformation(int id, String personalInformation){
-//        farmMarketRepository.updateSellerPersonalInformation(id, personalInformation);
-//    }
-//
-//    public void updateSellerAddress(int id, String address){
-//        farmMarketRepository.updateSellerAddress(id, address);
-//    }
-//    public void updateSellerPhone(int id, String phone){
-//        farmMarketRepository.updateSellerPhone(id, phone);
-//    }
-//
-//    public void updateSellerEmail(int id, String email){
-//        farmMarketRepository.updateSellerEmail(id, email);
-//    }
+
     public void updateSellerPassword(String name, String username, String email, String password){
         if(!farmMarketRepository.doesEmailExist(email)){
             throw new ApplicationException("Email is incorrect");}
@@ -120,8 +112,7 @@ public class FarmMarketService {
     }
 
     public List<Product> getLatest(){
-        int number = 3;
-        List<Integer> numbrid = farmMarketRepository.last3ProductsID(number);
+        List<Integer> numbrid = farmMarketRepository.last3ProductsID();
         List<Product> lastProducts = new ArrayList<>();
         for (Integer integer : numbrid) {
             lastProducts.add(farmMarketRepository.getLatest(integer));
