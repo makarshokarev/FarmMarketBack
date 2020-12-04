@@ -105,53 +105,18 @@ public class FarmMarketRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public void updateSellerName(int id, String newName) {
-        String sql = "UPDATE seller SET name =:m1 WHERE id = :m2";
+    public void updateSeller(int id, String name, String email, String address, String phone, String personalInformation) {
+        String sql = "UPDATE seller SET name =:m2, email = :m3, address = :m4, phone = :m5, personal_information = :m6 WHERE id = :m1";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", newName);
-        paramMap.put("m2", id);
+        paramMap.put("m1", id);
+        paramMap.put("m2", name);
+        paramMap.put("m3", email);
+        paramMap.put("m4", address);
+        paramMap.put("m5", phone);
+        paramMap.put("m6", personalInformation);
         jdbcTemplate.update(sql, paramMap);
     }
 
-    public void updateSellerPersonalInformation(int id, String personalInformation) {
-        String sql = "UPDATE seller SET personal_information =:m1 WHERE id = :m2";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", personalInformation);
-        paramMap.put("m2", id);
-        jdbcTemplate.update(sql, paramMap);
-    }
-
-    public void updateSellerAddress(int id, String address) {
-        String sql = "UPDATE seller SET address =:m1 WHERE id = :m2id = :m2";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", address);
-        paramMap.put("m2", id);
-        jdbcTemplate.update(sql, paramMap);
-    }
-
-    public void updateSellerEmail(int id, String email) {
-        String sql = "UPDATE seller SET email =:m1 WHERE id = :m2";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", email);
-        paramMap.put("m2", id);
-        jdbcTemplate.update(sql, paramMap);
-    }
-
-    public void updateSellerPhone(int id, String phone) {
-        String sql = "UPDATE seller SET phone =:m1 WHERE id = :m2";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", phone);
-        paramMap.put("m2", id);
-        jdbcTemplate.update(sql, paramMap);
-    }
-
-    public void updateSellerUsername(int id, String username) {
-        String sql = "UPDATE seller SET username =:m1 WHERE id = :m2";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", username);
-        paramMap.put("m2", id);
-        jdbcTemplate.update(sql, paramMap);
-    }
 
     public void updateSellerPassword(String email, String password) {
         String sql = "UPDATE seller SET password =:m1 WHERE email = :m2";
