@@ -122,7 +122,7 @@ public class FarmMarketRepository {
     }
 
     public void updateSellerAddress(int id, String address) {
-        String sql = "UPDATE seller SET address =:m1 WHERE id = :m2id = :m2";
+        String sql = "UPDATE seller SET address =:m1 WHERE id = :m2";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", address);
         paramMap.put("m2", id);

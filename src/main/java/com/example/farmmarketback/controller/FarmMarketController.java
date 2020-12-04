@@ -54,8 +54,10 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("getSeller")
-    public Seller1 getSeller(){
-        return getSellerService.getSeller();
+    public Seller1 getSeller(Authentication authentication){
+        MyUser userDetails = (MyUser) authentication.getPrincipal();
+        int sellerId = userDetails.getId();
+        return getSellerService.getSeller(sellerId);
     }
 
     @CrossOrigin
@@ -83,14 +85,16 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSellerName")
-    public void updateSellerName(@RequestBody Seller1 seller) {
+    public PopUpWindow updateSellerName(@RequestBody Seller1 seller) {
         farmMarketService.updateSellerName(seller.getId(), seller.getName());
+        return new PopUpWindow("Changed name to:" + seller.getName());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerEmail")
-    public void updateSellerEmail(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerEmail(@RequestBody Seller_entity seller) {
         farmMarketService.updateSellerEmail(seller.getId(), seller.getEmail());
+        return new PopUpWindow("Changed Email to: " + seller.getEmail());
     }
 
     @CrossOrigin
@@ -101,20 +105,23 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSellerPersonalInformation")
-    public void updateSellerPersonalInformation(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerPersonalInformation(@RequestBody Seller_entity seller) {
         farmMarketService.updateSellerPersonalInformation(seller.getId(), seller.getPersonalInformation());
+        return new PopUpWindow("Changed Personal Information");
     }
 
     @CrossOrigin
     @PutMapping("updateSellerAddress")
-    public void updateSellerAddress(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerAddress(@RequestBody Seller_entity seller) {
         farmMarketService.updateSellerAddress(seller.getId(), seller.getAddress());
+        return new PopUpWindow("Changed Address to: " + seller.getAddress());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPhone")
-    public void updateSellerPhone(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerPhone(@RequestBody Seller_entity seller) {
         farmMarketService.updateSellerPhone(seller.getId(), seller.getPhone());
+        return new PopUpWindow("Changed phone to: " + seller.getPhone());
     }
 
     @CrossOrigin

@@ -15,10 +15,10 @@ public class GetSellerRepo {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    public Seller1 getSeller(){
+    public Seller1 getSeller(int sellerId){
         String sql = "SELECT * FROM seller WHERE id = :m1";
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", 1);
+        paramMap.put("m1", sellerId);
         return jdbcTemplate.queryForObject(sql, paramMap, new SellerRowMapper());
     }
 }

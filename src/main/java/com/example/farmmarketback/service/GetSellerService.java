@@ -11,7 +11,7 @@ public class GetSellerService {
     @Autowired
     private GetSellerRepo getSellerRepo;
 
-    public Seller1 getSeller(){
-        return getSellerRepo.getSeller();
+    public Seller1 getSeller(int sellerId){
+        return getSellerRepo.getSeller(sellerId);
     }
 }
