@@ -5,8 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Seller_entity {
-
+public class Seller {
 
     private String name;
     private String email;

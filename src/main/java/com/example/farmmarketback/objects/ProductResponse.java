@@ -1,52 +1,23 @@
 package com.example.farmmarketback.objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 
-@Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy =
-            GenerationType.IDENTITY)
-    private Integer id;
-    private Integer categoryId;
-
-    public Product() {
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
+public class ProductResponse {
+    private int id;
     private String productName;
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
-    private Integer sellerId;
+    private int categoryId;
+    private int sellerId;
 
-    public Integer getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
-
 
     public String getProductName() {
         return productName;
@@ -78,5 +49,21 @@ public class Product {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
     }
 }

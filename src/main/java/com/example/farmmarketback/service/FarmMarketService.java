@@ -4,6 +4,7 @@ import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.objects.Category;
 import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.objects.Product;
+import com.example.farmmarketback.objects.SellerResponse;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -58,9 +59,17 @@ public class FarmMarketService {
         return farmMarketRepository.getProductBySeller(sellerId);
     }
 
+    public SellerResponse getSeller(){
+        return farmMarketRepository.getSeller();
+    }
+
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
                            BigDecimal price, BigDecimal amount) {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
+    }
+
+    public List<Category> getCategory(){
+        return farmMarketRepository.getCategory();
     }
 
     public void updateProduct(int id, int categoryId, String productName, String productDescription,
@@ -105,8 +114,7 @@ public class FarmMarketService {
     }
 
     public List<Product> getLatest(){
-        int number = 3;
-        List<Integer> numbrid = farmMarketRepository.last3ProductsID(number);
+        List<Integer> numbrid = farmMarketRepository.last3ProductsID();
         List<Product> lastProducts = new ArrayList<>();
         for (Integer integer : numbrid) {
             lastProducts.add(farmMarketRepository.getLatest(integer));

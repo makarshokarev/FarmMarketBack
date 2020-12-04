@@ -1,17 +1,12 @@
 package com.example.farmmarketback.controller;
 
-import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.objects.*;
 import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
 import com.example.farmmarketback.security.MyUser;
 import com.example.farmmarketback.service.*;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
 
 
 @RestController
 public class FarmMarketController {
     @Autowired
     private FarmMarketService farmMarketService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ProductService productService;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -40,12 +35,10 @@ public class FarmMarketController {
     private CategoryRepository categoryRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private GetSellerService getSellerService;
 
     @CrossOrigin
     @PostMapping("newSeller")
-    public PopUpWindow newSeller(@RequestBody Seller_entity seller) {
+    public PopUpWindow newSeller(@RequestBody Seller seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
@@ -54,8 +47,8 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("getSeller")
-    public Seller1 getSeller(){
-        return getSellerService.getSeller();
+    public SellerResponse getSeller(){
+        return farmMarketService.getSeller();
     }
 
     @CrossOrigin
@@ -70,12 +63,12 @@ public class FarmMarketController {
     @GetMapping("category")
     @CrossOrigin
     public List<Category> getAccount() {
-        return categoryService.getCategory();
+        return farmMarketService.getCategory();
     }
 
     @CrossOrigin
     @GetMapping("product")
-    public List<Product> getProduct(Authentication authentication) {
+    public List<Product> getProductBySeller(Authentication authentication) {
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
         return farmMarketService.getProductBySeller(sellerId);
@@ -83,43 +76,43 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateSellerName")
-    public void updateSellerName(@RequestBody Seller1 seller) {
+    public void updateSellerName(@RequestBody SellerResponse seller) {
         farmMarketService.updateSellerName(seller.getId(), seller.getName());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerEmail")
-    public void updateSellerEmail(@RequestBody Seller_entity seller) {
+    public void updateSellerEmail(@RequestBody Seller seller) {
         farmMarketService.updateSellerEmail(seller.getId(), seller.getEmail());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerUsername")
-    public void updateSellerUsername(@RequestBody Seller_entity seller) {
+    public void updateSellerUsername(@RequestBody Seller seller) {
         farmMarketService.updateSellerUsername(seller.getId(), seller.getUsername());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPersonalInformation")
-    public void updateSellerPersonalInformation(@RequestBody Seller_entity seller) {
+    public void updateSellerPersonalInformation(@RequestBody Seller seller) {
         farmMarketService.updateSellerPersonalInformation(seller.getId(), seller.getPersonalInformation());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerAddress")
-    public void updateSellerAddress(@RequestBody Seller_entity seller) {
+    public void updateSellerAddress(@RequestBody Seller seller) {
         farmMarketService.updateSellerAddress(seller.getId(), seller.getAddress());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPhone")
-    public void updateSellerPhone(@RequestBody Seller_entity seller) {
+    public void updateSellerPhone(@RequestBody Seller seller) {
         farmMarketService.updateSellerPhone(seller.getId(), seller.getPhone());
     }
 
     @CrossOrigin
     @PutMapping("updateSellerPassword")
-    public PopUpWindow updateSellerPassword(@RequestBody Seller_entity seller) {
+    public PopUpWindow updateSellerPassword(@RequestBody Seller seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         farmMarketService.updateSellerPassword(seller.getName(), seller.getUsername(), seller.getEmail(), encodedPassword);
@@ -134,7 +127,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("getAllSellers")
-    public List<Seller_entity> getAllSellers() {
+    public List<Seller> getAllSellers() {
         return sellerRepository.findAll();
     }
 
@@ -171,5 +164,27 @@ public class FarmMarketController {
         return farmMarketService.searchProduct(searchWord);
     }
 
+    @CrossOrigin
+    @PostMapping("contactSeller")
+    public void sendEmail() throws MessagingException {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+
+       Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("farmmarketAMI", "FarmMarket2020");
+            } });
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("anna.lazarenkova@gmail.com"));
+        message.setSubject("Test email");
+        message.setText("Vali IT test");
+        Transport.send(message);
+
+    }
 
 }
