@@ -155,16 +155,12 @@ public class FarmMarketRepository {
         return jdbcTemplate.queryForObject(sql, paramMap, String.class);
     }
 
-    public List<Integer> last3ProductsID() {
-        String sql = "SELECT id from product ";
+    public List<Integer> allProductsID() {
+        String sql = "SELECT id from product";
         Map<String, Object> paramMap = new HashMap<>();
         List<Integer> answer = jdbcTemplate.queryForList(sql, paramMap, Integer.class);
         Collections.sort(answer);
-        List<Integer> viimased = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            viimased.add(answer.get(answer.size() - i));
-        }
-        return viimased;
+        return answer;
     }
 
     public Product getLatest(int number) {

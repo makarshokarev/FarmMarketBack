@@ -24,7 +24,6 @@ import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.InternetAddress;
 
-
 @RestController
 public class FarmMarketController {
     @Autowired
@@ -86,7 +85,6 @@ public class FarmMarketController {
     public PopUpWindow updateSeller(@RequestBody SellerRequest seller) {
         farmMarketService.updateSeller(seller.getId(), seller.getName(), seller.getEmail(), seller.getAddress(), seller.getPhone(), seller.getPersonalInformation());
         return new PopUpWindow("Your info changed.");
-
     }
 
     @CrossOrigin
@@ -100,16 +98,17 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("getLatestProducts")
-    public List<Product> getLatest() {
-        return farmMarketService.getLatest();
+    public List<ProductGetFullInfo> getLatest() {
+        int mituToodetTasgastada = 3;
+        return farmMarketService.getLatestProducts(mituToodetTasgastada);
     }
-
-
+/*
     @CrossOrigin
     @PostMapping("login")
     public String login(@RequestBody Login login) {
         return farmMarketService.login(login);
     }
+*/
     @CrossOrigin
     @PutMapping("updateProduct")
     public PopUpWindow updateProduct(@RequestBody ProductRequest product){
@@ -148,27 +147,11 @@ public class FarmMarketController {
     public List<CategoriesGetAll> findAllCategories(){
         return farmMarketService.findAllCategories();
     }
+
     @CrossOrigin
     @PostMapping("contactSeller")
     public void sendEmail() throws MessagingException {
-        Properties prop = new Properties();
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-
-       Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("farmmarketAMI", "FarmMarket2020");
-            } });
-
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("anna.lazarenkova@gmail.com"));
-        message.setSubject("Test email");
-        message.setText("Vali IT test");
-        Transport.send(message);
-
+        farmMarketService.sendEmailtoSeller();
     }
 
 }
