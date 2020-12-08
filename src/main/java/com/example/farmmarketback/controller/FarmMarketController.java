@@ -116,6 +116,9 @@ public class FarmMarketController {
     @CrossOrigin
     @GetMapping("searchProduct")
     public List <ProductGetFullInfo> searchProductByWord (String searchWord) {
+        if(searchWord == null || searchWord.isBlank() ){
+            return farmMarketService.findAllProducts();
+        }
         return farmMarketService.searchProduct(searchWord);
     }
 
@@ -132,13 +135,7 @@ public class FarmMarketController {
         Product product = farmMarketService.getProductById(id);
         return new ProductGetFullInfo(product);
     }
-/*
-    @CrossOrigin
-    @GetMapping("findAllProducts")
-    private List<ProductGetFullInfo> findAllProducts(){
-        return farmMarketService.findAllProducts();
-    }
-*/
+
     @CrossOrigin
     @GetMapping("findAllCategories")
     public List<CategoriesGetAll> findAllCategories(){

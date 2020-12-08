@@ -111,9 +111,6 @@ public class FarmMarketService {
     }
 
     public List<ProductGetFullInfo> searchProduct(String searchWord) {
-        if(searchWord == null || searchWord.isBlank() ){
-            findAllProducts();
-        }
         List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCase(searchWord);
        List<ProductGetFullInfo> fullList = new ArrayList<>();
         for (Product product : myList) {
