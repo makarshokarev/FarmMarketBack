@@ -1,9 +1,5 @@
 package com.example.farmmarketback.responses;
 
-import com.example.farmmarketback.entity.Category;
-import com.example.farmmarketback.entity.Seller;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 
 

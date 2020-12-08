@@ -11,18 +11,18 @@ import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
+import com.example.farmmarketback.responses.SellerResponse;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FarmMarketService {
@@ -72,11 +72,11 @@ public class FarmMarketService {
     public List<Product> getProductBySeller(int sellerId){
         return farmMarketRepository.getProductBySeller(sellerId);
     }
-/*
+
     public SellerResponse getSeller(int sellerId){
         return farmMarketRepository.getSeller(sellerId);
     }
-*/
+
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
                            BigDecimal price, BigDecimal amount) {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
@@ -110,59 +110,69 @@ public class FarmMarketService {
         farmMarketRepository.updateSellerPassword(email, password);
     }
 
-    public List<Product> getLatest(){
-        List<Integer> numbrid = farmMarketRepository.last3ProductsID();
-        List<Product> lastProducts = new ArrayList<>();
-        for (Integer integer : numbrid) {
-            lastProducts.add(farmMarketRepository.getLatest(integer));
+    public List<ProductGetFullInfo> searchProduct(String searchWord) {
+      // farmMarketRepository.searchProduct(searchWord);
+
+        List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCase(searchWord);
+       List<ProductGetFullInfo> fullList = new ArrayList<>();
+        for (Product product : myList) {
+            fullList.add(new ProductGetFullInfo(product));
         }
-        return lastProducts;
+       return fullList;
     }
 
-    public List<Product> searchProduct(String searchWord) {
-        return farmMarketRepository.searchProduct(searchWord);
-    }
-
-    @Transactional(readOnly = true)
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        sellerRepository.niceShortNameForFunction("midagi");
         return seller;
     }
-    @Transactional(readOnly = true)
+
     public Product getProductById (Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
         Product product = productOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        productRepository.findAllByProductName("midagi");
         return product;
     }
 
-    @Transactional(readOnly = true)
     public Category getCategoryById (Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
         Category category = categoryOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        categoryRepository.findAllByCategoryName("midagi");
         return category;
     }
 
-    public List<ProductGetFullInfo> findAllProducts() {
-        int i = productRepository.findAll().size();
-        Product product = new Product();
+    public List<ProductGetFullInfo> getProductsByCategory (String name) {
+        List<Product> productList = productRepository.findAllByCategoryCategoryNameContainingIgnoreCase(name);
         List<ProductGetFullInfo> allProducts = new ArrayList<>();
-        for(int j=1; j<=i; j++) {
-            product = getProductById(j);
+        for (Product product : productList) {
             allProducts.add(new ProductGetFullInfo(product));
         }
         return  allProducts;
     }
 
+    public List<ProductGetFullInfo> findAllProducts() {
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>0; i--){
+            Product product = getProductById(allProductsId.get(i));
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return  allProducts;
+    }
+
+    public List<ProductGetFullInfo> getLatestProducts(int number){
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> lastProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>allProductsId.size()-1-number; i--){
+                Product product = getProductById(allProductsId.get(i));
+                lastProducts.add(new ProductGetFullInfo(product));
+        }
+        return lastProducts;
+    }
+
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
-        Category category = new Category();
         List<CategoriesGetAll> allCategories = new ArrayList<>();
         for(int j=1; j<=i; j++) {
-            category = getCategoryById(j);
+            Category category = getCategoryById(j);
             allCategories.add(new CategoriesGetAll(category));
         }
         return  allCategories;
@@ -172,4 +182,24 @@ public class FarmMarketService {
         farmMarketRepository.uploadFile(file);
     }
 
+    public void sendEmailtoSeller()  throws MessagingException {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("farmmarketAMI", "FarmMarket2020");
+            } });
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("anna.lazarenkova@gmail.com"));
+        message.setSubject("Test email");
+        message.setText("Vali IT test");
+        Transport.send(message);
+
+    }
 }
