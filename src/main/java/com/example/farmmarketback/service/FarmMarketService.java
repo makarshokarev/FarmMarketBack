@@ -11,6 +11,7 @@ import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
+import com.example.farmmarketback.responses.SellerResponse;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -71,11 +72,11 @@ public class FarmMarketService {
     public List<Product> getProductBySeller(int sellerId){
         return farmMarketRepository.getProductBySeller(sellerId);
     }
-/*
+
     public SellerResponse getSeller(int sellerId){
         return farmMarketRepository.getSeller(sellerId);
     }
-*/
+
     public void newProduct(int sellerId, int categoryId, String productName, String productDescription,
                            BigDecimal price, BigDecimal amount) {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
@@ -109,36 +110,43 @@ public class FarmMarketService {
         farmMarketRepository.updateSellerPassword(email, password);
     }
 
-    public List<Product> searchProduct(String searchWord) {
-        return farmMarketRepository.searchProduct(searchWord);
+    public List<ProductGetFullInfo> searchProduct(String searchWord) {
+      // farmMarketRepository.searchProduct(searchWord);
+
+        List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCase(searchWord);
+       List<ProductGetFullInfo> fullList = new ArrayList<>();
+        for (Product product : myList) {
+            fullList.add(new ProductGetFullInfo(product));
+        }
+       return fullList;
     }
 
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        sellerRepository.niceShortNameForFunction("midagi");
         return seller;
     }
 
     public Product getProductById (Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
         Product product = productOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        productRepository.findAllByProductName("productName");
         return product;
     }
 
     public Category getCategoryById (Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
         Category category = categoryOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        categoryRepository.findAllByCategoryName("categoryName");
         return category;
     }
-    //TODO
-    /*
-    public List<ProductGetFullInfo> productsByCategory (Integer categoryId) {
-        List<Product> productList = productRepository.findAllByCategory(categoryId);
+
+    public List<ProductGetFullInfo> getProductsByCategory (String name) {
+        List<Product> productList = productRepository.findAllByCategoryCategoryNameContainingIgnoreCase(name);
         List<ProductGetFullInfo> allProducts = new ArrayList<>();
-    }*/
+        for (Product product : productList) {
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return  allProducts;
+    }
 
     public List<ProductGetFullInfo> findAllProducts() {
         List<Integer> allProductsId = farmMarketRepository.allProductsID();
@@ -153,11 +161,9 @@ public class FarmMarketService {
     public List<ProductGetFullInfo> getLatestProducts(int number){
         List<Integer> allProductsId = farmMarketRepository.allProductsID();
         List<ProductGetFullInfo> lastProducts = new ArrayList<>();
-        for(int i = allProductsId.size()-1; i>0; i--){
-            while (number>0){
+        for(int i = allProductsId.size()-1; i>allProductsId.size()-1-number; i--){
                 Product product = getProductById(allProductsId.get(i));
                 lastProducts.add(new ProductGetFullInfo(product));
-                number--;}
         }
         return lastProducts;
     }

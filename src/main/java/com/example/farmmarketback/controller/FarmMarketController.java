@@ -19,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 import javax.mail.*;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.InternetAddress;
 
 @RestController
 public class FarmMarketController {
@@ -48,7 +45,7 @@ public class FarmMarketController {
         farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
         return new PopUpWindow("Thank you for registration.");
     }
-/*
+
     @CrossOrigin
     @GetMapping("getSeller")
     public SellerResponse getSeller(Authentication authentication){
@@ -56,7 +53,7 @@ public class FarmMarketController {
         int sellerId = userDetails.getId();
         return farmMarketService.getSeller(sellerId);
     }
-*/
+
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct(Authentication authentication, @RequestBody ProductRequest product) {
@@ -99,16 +96,16 @@ public class FarmMarketController {
     @CrossOrigin
     @GetMapping("getLatestProducts")
     public List<ProductGetFullInfo> getLatest() {
-        int mituToodetTasgastada = 3;
+        int mituToodetTasgastada = 6;
         return farmMarketService.getLatestProducts(mituToodetTasgastada);
     }
-/*
+
     @CrossOrigin
     @PostMapping("login")
     public String login(@RequestBody Login login) {
         return farmMarketService.login(login);
     }
-*/
+
     @CrossOrigin
     @PutMapping("updateProduct")
     public PopUpWindow updateProduct(@RequestBody ProductRequest product){
@@ -118,7 +115,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @GetMapping("searchProduct")
-    public List <Product> searchProduct (String searchWord) {
+    public List <ProductGetFullInfo> searchProductByWord (String searchWord) {
         return farmMarketService.searchProduct(searchWord);
     }
 
@@ -154,4 +151,9 @@ public class FarmMarketController {
         farmMarketService.sendEmailtoSeller();
     }
 
+    @CrossOrigin
+    @GetMapping("productsByCategory")
+    public List<ProductGetFullInfo> getproductsByCategoryName(String name){
+        return farmMarketService.getProductsByCategory(name);
+    }
 }

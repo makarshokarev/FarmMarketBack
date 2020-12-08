@@ -1,10 +1,11 @@
 package com.example.farmmarketback.rowmapper;
 
+import com.example.farmmarketback.responses.SellerResponse;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-/*
+
 public class SellerRowMapper implements RowMapper<SellerResponse> {
     @Override
     public SellerResponse mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -17,5 +18,5 @@ public class SellerRowMapper implements RowMapper<SellerResponse> {
         seller.setPersonalInformation(resultSet.getString("personal_information"));
         seller.setPhone(resultSet.getString("phone"));
         return seller;
-
-}*/
+    }
+}

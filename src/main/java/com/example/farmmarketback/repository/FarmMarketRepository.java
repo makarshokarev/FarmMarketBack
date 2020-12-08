@@ -1,9 +1,12 @@
 package com.example.farmmarketback.repository;
 
 import com.example.farmmarketback.entity.Category;
+import com.example.farmmarketback.responses.ProductGetFullInfo;
+import com.example.farmmarketback.responses.SellerResponse;
 import com.example.farmmarketback.rowmapper.CategoryRowMapper;
 import com.example.farmmarketback.rowmapper.ProductRowMapper;
 import com.example.farmmarketback.entity.Product;
+import com.example.farmmarketback.rowmapper.SellerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,14 +68,14 @@ public class FarmMarketRepository {
         paramMap.put("m1", catId);
         return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
     }
-/*
+
     public SellerResponse getSeller(int sellerId){
         String sql = "SELECT * FROM seller WHERE id = :m1";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", sellerId);
         return jdbcTemplate.queryForObject(sql, paramMap, new SellerRowMapper());
     }
-*/
+
     public int getSellerId(String username) {
         Map<String, Object> paramMap = new HashMap<>();
         String sql1 = "SELECT id FROM seller WHERE username = :m1";
