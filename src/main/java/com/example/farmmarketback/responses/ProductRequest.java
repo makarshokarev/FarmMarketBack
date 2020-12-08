@@ -11,6 +11,15 @@ public class ProductRequest {
     private String productDescription;
     private BigDecimal price;
     private BigDecimal amount;
+    private byte[] productPicture;
+
+    public byte[] getProductPicture() {
+        return productPicture;
+    }
+
+    public void setProductPicture(byte[] productPicture) {
+        this.productPicture = productPicture;
+    }
 
     public Integer getId() {
         return id;

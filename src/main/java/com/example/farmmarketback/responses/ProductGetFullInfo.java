@@ -14,6 +14,7 @@ public class ProductGetFullInfo {
     private String sellerEmail;
     private String sellerPhone;
     private String categoryPicture;
+    private byte [] productPicture;
 
     public ProductGetFullInfo(Product product) {
         this.productName = product.getProductName();
@@ -25,7 +26,7 @@ public class ProductGetFullInfo {
         this.sellerEmail = product.getSeller().getEmail();
         this.sellerPhone = product.getSeller().getPhone();
         this.categoryPicture = product.getCategory().getCategoryPicture();
-    }
+        }
 
     public String getProductName() {
         return productName;
@@ -97,5 +98,13 @@ public class ProductGetFullInfo {
 
     public void setCategoryPicture(String categoryPicture) {
         this.categoryPicture = categoryPicture;
+    }
+
+    public byte[] getProductPicture() {
+        return productPicture;
+    }
+
+    public void setProductPicture(byte[] productPicture) {
+        this.productPicture = productPicture;
     }
 }
