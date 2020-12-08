@@ -25,7 +25,7 @@ public class ProductGetFullInfo {
         this.sellerEmail = product.getSeller().getEmail();
         this.sellerPhone = product.getSeller().getPhone();
         this.categoryPicture = product.getCategory().getCategoryPicture();
-    }
+        }
 
     public String getProductName() {
         return productName;
@@ -98,4 +98,5 @@ public class ProductGetFullInfo {
     public void setCategoryPicture(String categoryPicture) {
         this.categoryPicture = categoryPicture;
     }
+
 }

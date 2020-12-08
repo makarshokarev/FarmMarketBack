@@ -77,4 +77,6 @@ public class Product {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+
 }
