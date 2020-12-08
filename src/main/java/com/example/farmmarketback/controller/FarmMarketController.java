@@ -132,13 +132,13 @@ public class FarmMarketController {
         Product product = farmMarketService.getProductById(id);
         return new ProductGetFullInfo(product);
     }
-
+/*
     @CrossOrigin
     @GetMapping("findAllProducts")
-    public List<ProductGetFullInfo> findAllProducts(){
+    private List<ProductGetFullInfo> findAllProducts(){
         return farmMarketService.findAllProducts();
     }
-
+*/
     @CrossOrigin
     @GetMapping("findAllCategories")
     public List<CategoriesGetAll> findAllCategories(){

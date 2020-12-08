@@ -111,14 +111,34 @@ public class FarmMarketService {
     }
 
     public List<ProductGetFullInfo> searchProduct(String searchWord) {
-      // farmMarketRepository.searchProduct(searchWord);
-
+        if(searchWord == null || searchWord.isBlank() ){
+            findAllProducts();
+        }
         List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCase(searchWord);
        List<ProductGetFullInfo> fullList = new ArrayList<>();
         for (Product product : myList) {
             fullList.add(new ProductGetFullInfo(product));
         }
        return fullList;
+    }
+    public List<ProductGetFullInfo> findAllProducts() {
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>=0; i--){
+            Product product = getProductById(allProductsId.get(i));
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return  allProducts;
+    }
+
+    public List<ProductGetFullInfo> getLatestProducts(int number){
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> lastProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>allProductsId.size()-1-number; i--){
+            Product product = getProductById(allProductsId.get(i));
+            lastProducts.add(new ProductGetFullInfo(product));
+        }
+        return lastProducts;
     }
 
     public Seller getSellerById(Integer id) {
@@ -148,25 +168,6 @@ public class FarmMarketService {
         return  allProducts;
     }
 
-    public List<ProductGetFullInfo> findAllProducts() {
-        List<Integer> allProductsId = farmMarketRepository.allProductsID();
-        List<ProductGetFullInfo> allProducts = new ArrayList<>();
-        for(int i = allProductsId.size()-1; i>0; i--){
-            Product product = getProductById(allProductsId.get(i));
-            allProducts.add(new ProductGetFullInfo(product));
-        }
-        return  allProducts;
-    }
-
-    public List<ProductGetFullInfo> getLatestProducts(int number){
-        List<Integer> allProductsId = farmMarketRepository.allProductsID();
-        List<ProductGetFullInfo> lastProducts = new ArrayList<>();
-        for(int i = allProductsId.size()-1; i>allProductsId.size()-1-number; i--){
-                Product product = getProductById(allProductsId.get(i));
-                lastProducts.add(new ProductGetFullInfo(product));
-        }
-        return lastProducts;
-    }
 
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
