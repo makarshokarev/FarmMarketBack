@@ -55,10 +55,7 @@
             <column name="seller_id" type="int">
                 <constraints nullable="false" primaryKey="false" unique="false"/>
             </column>
-            <column name="files_id" type="int">
-                <constraints nullable="true" primaryKey="false" unique="false"/>
-            </column>
-            <column  name="file"  type="bytea" >
+            <column  name="picture"  type="bytea" >
                 <constraints  nullable="true"/>
             </column>
         </createTable>

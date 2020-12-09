@@ -1,16 +1,13 @@
 package com.example.farmmarketback.responses;
 
-import java.math.BigDecimal;
-
-
 public class ProductRequest {
 
     private Integer id;
     private Integer categoryId;
     private String productName;
     private String productDescription;
-    private BigDecimal price;
-    private BigDecimal amount;
+    private String price;
+    private String amount;
 
     public Integer getId() {
         return id;
@@ -44,19 +41,19 @@ public class ProductRequest {
         this.productDescription = productDescription;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public BigDecimal getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

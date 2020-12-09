@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.mail.*;
 
@@ -42,7 +43,7 @@ public class FarmMarketController {
     public PopUpWindow newSeller(@RequestBody SellerRequest seller) {
         String rawPassword = seller.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
-        farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getUsername(), encodedPassword, seller.getPhone());
+        farmMarketService.newSeller(seller.getName(), seller.getEmail(), seller.getAddress(), seller.getUsername(), encodedPassword, seller.getPhone());
         return new PopUpWindow("Thank you for registration.");
     }
 
@@ -57,9 +58,11 @@ public class FarmMarketController {
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct(Authentication authentication, @RequestBody ProductRequest product) {
+        BigDecimal price = new BigDecimal(product.getPrice().replace(",","."));
+        BigDecimal amount = new BigDecimal(product.getAmount().replace(",", "."));
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
-        farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), price, amount);
         return new PopUpWindow("You have added new product: " + product.getProductName());
     }
 
@@ -109,7 +112,9 @@ public class FarmMarketController {
     @CrossOrigin
     @PutMapping("updateProduct")
     public PopUpWindow updateProduct(@RequestBody ProductRequest product){
-        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), product.getPrice(), product.getAmount());
+        BigDecimal price = new BigDecimal(product.getPrice().replace(",","."));
+        BigDecimal amount = new BigDecimal(product.getAmount().replace(",", "."));
+        farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), price, amount);
         return new PopUpWindow("Thank you. Product information is updated.");
     }
 
@@ -144,13 +149,20 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PostMapping("contactSeller")
-    public void sendEmail() throws MessagingException {
-        farmMarketService.sendEmailtoSeller();
+    public void sendEmail(@RequestBody ContactSeller contactSeller) throws MessagingException {
+        farmMarketService.sendEmailtoSeller(contactSeller.getEmailMessage());
     }
 
     @CrossOrigin
     @GetMapping("productsByCategory")
     public List<ProductGetFullInfo> getproductsByCategoryName(String name){
         return farmMarketService.getProductsByCategory(name);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("removeProduct")
+    public PopUpWindow removeProduct(Authentication authentication, int id){
+        farmMarketService.removeProduct(id);
+        return new PopUpWindow("Product deleted");
     }
 }
