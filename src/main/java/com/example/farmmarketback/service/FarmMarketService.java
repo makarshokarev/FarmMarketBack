@@ -123,6 +123,18 @@ public class FarmMarketService {
         return fullList;
     }
 
+    public List<ProductGetFullInfo> searchProductByCategory(String searchWord) {
+        if (searchWord == null || searchWord.isBlank()) {
+            return findAllProducts();
+        }
+        List<Product> myList = productRepository.findAllByCategoryCategoryNameContainingIgnoreCase(searchWord);
+        List<ProductGetFullInfo> fullList = new ArrayList<>();
+        for (Product product : myList) {
+            fullList.add(new ProductGetFullInfo(product));
+        }
+        return fullList;
+    }
+
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));

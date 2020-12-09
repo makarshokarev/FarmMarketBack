@@ -118,6 +118,11 @@ public class FarmMarketController {
     public List <ProductGetFullInfo> searchProductByWord (String searchWord) {
         return farmMarketService.searchProduct(searchWord);
     }
+    @CrossOrigin
+    @GetMapping("searchProductByCategory")
+    public List <ProductGetFullInfo> searchProductByCategory (String searchWord) {
+        return farmMarketService.searchProductByCategory(searchWord);
+    }
 
     @CrossOrigin
     @GetMapping("sellerInformationById")
