@@ -149,8 +149,9 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PostMapping("contactSeller")
-    public void sendEmail(@RequestBody ContactSeller contactSeller) throws MessagingException {
-        farmMarketService.sendEmailtoSeller(contactSeller.getEmailMessage());
+    public PopUpWindow sendEmail(String  message) throws MessagingException {
+        farmMarketService.sendEmailtoSeller(message);
+        return new PopUpWindow("You message has been sent");
     }
 
     @CrossOrigin
@@ -162,6 +163,8 @@ public class FarmMarketController {
     @CrossOrigin
     @DeleteMapping("removeProduct")
     public PopUpWindow removeProduct(Authentication authentication, int id){
+//        MyUser userDetails = (MyUser) authentication.getPrincipal();
+//        int sellerId = userDetails.getId();
         farmMarketService.removeProduct(id);
         return new PopUpWindow("Product deleted");
     }
