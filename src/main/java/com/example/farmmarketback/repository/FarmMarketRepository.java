@@ -180,6 +180,7 @@ public class FarmMarketRepository {
         return jdbcTemplate.query(sql, paramMap, new ProductRowMapper());
     }
 
+
     public void uploadFile(byte[] file){
         String sql = "INSERT INTO files (file) value (:m1)";
         Map<String, Object> paramMap = new HashMap<>();

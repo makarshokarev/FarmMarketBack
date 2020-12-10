@@ -135,6 +135,28 @@ public class FarmMarketService {
         return fullList;
     }
 
+    public List<ProductGetFullInfo> searchProductByCategoryAndName(String searchName, String searchCategory) {
+        List<ProductGetFullInfo> answer = new ArrayList<>();
+        if ((searchName == null || searchName.isBlank())&&(searchCategory == null || searchCategory.isBlank())) {
+            answer = findAllProducts();
+               }
+        if ((searchName == null || searchName.isBlank())&&(searchCategory != null)) {
+            answer = searchProductByCategory(searchCategory);
+        }
+        if ((searchName != null)&&(searchCategory == null || searchCategory.isBlank())) {
+            answer = searchProduct(searchName);
+        }
+        if ((searchName != null)&&(searchCategory != null)) {
+            List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCaseAndCategoryCategoryNameContainingIgnoreCase(searchName,searchCategory);
+            List<ProductGetFullInfo> fullList = new ArrayList<>();
+            for (Product product : myList) {
+                fullList.add(new ProductGetFullInfo(product));
+            }
+            answer = fullList;
+        }
+            return answer;
+    }
+
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));

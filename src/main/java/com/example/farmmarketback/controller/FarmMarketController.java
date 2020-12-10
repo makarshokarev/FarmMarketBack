@@ -125,6 +125,12 @@ public class FarmMarketController {
     }
 
     @CrossOrigin
+    @GetMapping("searchProductByCategoryAndName")
+    public List <ProductGetFullInfo> searchProductByCategoryAndName (String searchName, String searchCategory) {
+        return farmMarketService.searchProductByCategoryAndName(searchName, searchCategory);
+    }
+
+    @CrossOrigin
     @GetMapping("sellerInformationById")
     public SellerGetDetailInfo sellerGetDetailInfo(Integer id){
         Seller seller = farmMarketService.getSellerById(id);

@@ -8,8 +8,4 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SellerRepository extends JpaRepository<Seller,Integer> {
-
-    @Query(value = "SELECT s FROM Seller s WHERE s.name = :midagi")
-    List<Seller> niceShortNameForFunction(@Param("midagi") String midagi);
-
 }
