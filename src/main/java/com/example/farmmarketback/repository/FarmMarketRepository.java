@@ -1,13 +1,14 @@
 package com.example.farmmarketback.repository;
 
 import com.example.farmmarketback.entity.Category;
-import com.example.farmmarketback.responses.ProductGetFullInfo;
+import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.responses.SellerResponse;
 import com.example.farmmarketback.rowmapper.CategoryRowMapper;
 import com.example.farmmarketback.rowmapper.ProductRowMapper;
 import com.example.farmmarketback.entity.Product;
 import com.example.farmmarketback.rowmapper.SellerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -23,14 +24,15 @@ public class FarmMarketRepository {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void newSeller(String name, String email, String username, String password, String phone) {
-        String sql = "insert into seller(name, email, username, password, phone) values(:m1, :m2, :m3, :m4, :m5)";
+    public void newSeller(String name, String email, String address, String username, String password, String phone) {
+        String sql = "insert into seller(name, email, address, username, password, phone) values(:m1, :m2, :m3, :m4, :m5, :m6)";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", name);
         paramMap.put("m2", email);
-        paramMap.put("m3", username);
-        paramMap.put("m4", password);
-        paramMap.put("m5", phone);
+        paramMap.put("m3", address);
+        paramMap.put("m4", username);
+        paramMap.put("m5", password);
+        paramMap.put("m6", phone);
         jdbcTemplate.update(sql, paramMap);
     }
 
@@ -77,10 +79,13 @@ public class FarmMarketRepository {
     }
 
     public int getSellerId(String username) {
-        Map<String, Object> paramMap = new HashMap<>();
-        String sql1 = "SELECT id FROM seller WHERE username = :m1";
-        paramMap.put("m1", username);
-        return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            String sql1 = "SELECT id FROM seller WHERE username = :m1";
+            paramMap.put("m1", username);
+            return jdbcTemplate.queryForObject(sql1, paramMap, Integer.class);
+        } catch (EmptyResultDataAccessException e){
+        throw new ApplicationException("No such username registered");}
     }
 
     public List<Category> getCategory() {
@@ -185,6 +190,13 @@ public class FarmMarketRepository {
         String sql = "INSERT INTO files (file) value (:m1)";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("m1", file);
+        jdbcTemplate.update(sql, paramMap);
+    }
+
+    public void removeProduct(int id){
+        String sql = "Delete from product where id =:m1";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("m1", id);
         jdbcTemplate.update(sql, paramMap);
     }
 

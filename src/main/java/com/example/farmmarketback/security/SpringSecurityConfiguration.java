@@ -16,10 +16,13 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/","/searchProductByCategoryAndName","/sellerInformationById","/searchProductByCategory","productInformationById","sellerInformationById","/findAllProducts","/findAllCategories", "/searchProduct", "/updateSellerPassword", "/login", "/newSeller", "/newProduct", "/category", "/getAllProducts", "/getAllSellers", "/getAllCategories", "/getLatestProducts", "/product", "/getSeller", "/updateSeller",  "/photos/upload", "/contactSeller", "/productsByCategory", "/productInformationById").permitAll()
+                .antMatchers("/", "/searchProductByCategoryAndName","productInformationById","sellerInformationById","/findAllProducts","/findAllCategories", "/searchProduct", "/updateSellerPassword", "/login", "/newSeller", "/newProduct", "/category", "/getAllProducts", "/getAllSellers", "/getAllCategories", "/getLatestProducts", "/product", "/getSeller", "/updateSeller",  "/photos/upload", "/contactSeller", "/productsByCategory", "/productInformationById").permitAll()
+                .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors();
+        http.csrf().disable();
     }
 
     @Bean
