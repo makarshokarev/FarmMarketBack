@@ -14,6 +14,7 @@ public class ProductGetFullInfo {
     private String sellerEmail;
     private String sellerPhone;
     private String categoryPicture;
+    private String categoryName;
 
     public ProductGetFullInfo(Product product) {
         this.productName = product.getProductName();
@@ -25,6 +26,7 @@ public class ProductGetFullInfo {
         this.sellerEmail = product.getSeller().getEmail();
         this.sellerPhone = product.getSeller().getPhone();
         this.categoryPicture = product.getCategory().getCategoryPicture();
+        this.categoryName = product.getCategory().getCategoryName();
         }
 
     public String getProductName() {
@@ -99,4 +101,11 @@ public class ProductGetFullInfo {
         this.categoryPicture = categoryPicture;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 }
