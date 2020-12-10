@@ -115,7 +115,7 @@ public class FarmMarketController {
 
     @CrossOrigin
     @PutMapping("updateProduct")
-    public PopUpWindow updateProduct(@RequestBody ProductRequest product){
+    public PopUpWindow updateProduct(Authentication authentication, @RequestBody ProductRequest product){
         BigDecimal price = new BigDecimal(product.getPrice().replace(",","."));
         BigDecimal amount = new BigDecimal(product.getAmount().replace(",", "."));
         farmMarketService.updateProduct(product.getId(), product.getCategoryId(), product.getProductName(), product.getProductDescription(), price, amount);
@@ -167,8 +167,6 @@ public class FarmMarketController {
     @CrossOrigin
     @DeleteMapping("removeProduct")
     public PopUpWindow removeProduct(Authentication authentication, int id){
-//        MyUser userDetails = (MyUser) authentication.getPrincipal();
-//        int sellerId = userDetails.getId();
         farmMarketService.removeProduct(id);
         return new PopUpWindow("Product deleted");
     }

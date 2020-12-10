@@ -140,20 +140,17 @@ public class FarmMarketService {
 
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
-        Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("Mistake is query"));
-        return seller;
+        return sellerOp.orElseThrow(() -> new RuntimeException("Mistake is query"));
     }
 
     public Product getProductById (Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
-        Product product = productOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
-        return product;
+        return productOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
     public Category getCategoryById (Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
-        Category category = categoryOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
-        return category;
+        return categoryOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
     public List<ProductGetFullInfo> getProductsByCategory (String name) {
@@ -202,6 +199,7 @@ public class FarmMarketService {
 
     public void removeProduct(int id){
         //productRepository.removeProductById(id);
+        productRepository.deleteById(id);
         farmMarketRepository.removeProduct(id);
     }
 }
