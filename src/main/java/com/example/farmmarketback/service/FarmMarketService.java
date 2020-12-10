@@ -37,16 +37,19 @@ public class FarmMarketService {
     @Autowired
     private ProductRepository productRepository;
 
-    public void newSeller(String name, String email, String username, String password, String phone) {
-        if (farmMarketRepository.doesEmailExist(email)) {
+    public void newSeller(String name, String email,String address,String username, String password, String phone) {
+        if(farmMarketRepository.doesEmailExist(email)){
+
             throw new ApplicationException("This email is already in use");
         }
         if (farmMarketRepository.doesUsernameExist(username)) {
             throw new ApplicationException("This username is already in use");
         }
-        try {
-            farmMarketRepository.newSeller(name, email, username, password, phone);
-        } catch (Exception e) {
+
+        try{
+        farmMarketRepository.newSeller(name, email, address, username, password, phone);
+        } catch (Exception e){
+
             System.out.println(e);
         }
     }
@@ -66,7 +69,7 @@ public class FarmMarketService {
                     .claim("id", id);
             return builder.compact();
         }
-        throw new ApplicationException("vale kasutajanimi või parool");
+        throw new ApplicationException("Username or password is incorrect");
     }
 
     public List<Product> getProductBySeller(int sellerId) {
@@ -112,6 +115,7 @@ public class FarmMarketService {
     }
 
     public List<ProductGetFullInfo> searchProduct(String searchWord) {
+
         if (searchWord == null || searchWord.isBlank()) {
             return findAllProducts();
         }
@@ -122,23 +126,39 @@ public class FarmMarketService {
         }
         return fullList;
     }
+    public List<ProductGetFullInfo> findAllProducts() {
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>=0; i--){
+            Product product = getProductById(allProductsId.get(i));
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return  allProducts;
+    }
+
+    public List<ProductGetFullInfo> getLatestProducts(int number){
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> lastProducts = new ArrayList<>();
+        for(int i = allProductsId.size()-1; i>allProductsId.size()-1-number; i--){
+            Product product = getProductById(allProductsId.get(i));
+            lastProducts.add(new ProductGetFullInfo(product));
+        }
+        return lastProducts;
+    }
 
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
-        Seller seller = sellerOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        return seller;
+        return sellerOp.orElseThrow(() -> new RuntimeException("Mistake is query"));
     }
 
     public Product getProductById(Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
-        Product product = productOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        return product;
+        return productOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
     public Category getCategoryById(Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
-        Category category = categoryOp.orElseThrow(() -> new RuntimeException("juhtus viga"));
-        return category;
+        return categoryOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
     public List<ProductGetFullInfo> getProductsByCategory(String name) {
@@ -160,16 +180,6 @@ public class FarmMarketService {
         return allProducts;
     }
 
-    public List<ProductGetFullInfo> getLatestProducts(int number) {
-        List<Integer> allProductsId = farmMarketRepository.allProductsID();
-        List<ProductGetFullInfo> lastProducts = new ArrayList<>();
-        for (int i = allProductsId.size() - 1; i > allProductsId.size() - 1 - number; i--) {
-            Product product = getProductById(allProductsId.get(i));
-            lastProducts.add(new ProductGetFullInfo(product));
-        }
-        return lastProducts;
-    }
-
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
         List<CategoriesGetAll> allCategories = new ArrayList<>();
@@ -185,7 +195,9 @@ public class FarmMarketService {
         farmMarketRepository.uploadFile(file);
     }
 
-    public void sendEmailtoSeller() throws MessagingException {
+
+    public void sendEmailtoSeller( String text)  throws MessagingException {
+
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
@@ -201,9 +213,14 @@ public class FarmMarketService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("anna.lazarenkova@gmail.com"));
-        message.setSubject("Test email");
-        message.setText("Vali IT test");
+        message.setSubject("Request from FarmMarket");
+        message.setText(text);
         Transport.send(message);
+    }
 
+    public void removeProduct(int id){
+        //productRepository.removeProductById(id);
+        productRepository.deleteById(id);
+        farmMarketRepository.removeProduct(id);
     }
 }
