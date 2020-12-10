@@ -1,16 +1,16 @@
 package com.example.farmmarketback.service;
 
-import com.example.farmmarketback.responses.CategoriesGetAll;
-import com.example.farmmarketback.responses.ProductGetFullInfo;
-import com.example.farmmarketback.exception.ApplicationException;
 import com.example.farmmarketback.entity.Category;
-import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.entity.Product;
 import com.example.farmmarketback.entity.Seller;
+import com.example.farmmarketback.exception.ApplicationException;
+import com.example.farmmarketback.objects.Login;
 import com.example.farmmarketback.repository.CategoryRepository;
 import com.example.farmmarketback.repository.FarmMarketRepository;
 import com.example.farmmarketback.repository.ProductRepository;
 import com.example.farmmarketback.repository.SellerRepository;
+import com.example.farmmarketback.responses.CategoriesGetAll;
+import com.example.farmmarketback.responses.ProductGetFullInfo;
 import com.example.farmmarketback.responses.SellerResponse;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -39,23 +39,26 @@ public class FarmMarketService {
 
     public void newSeller(String name, String email,String address,String username, String password, String phone) {
         if(farmMarketRepository.doesEmailExist(email)){
+
             throw new ApplicationException("This email is already in use");
         }
-        if (farmMarketRepository.doesUsernameExist(username)){
+        if (farmMarketRepository.doesUsernameExist(username)) {
             throw new ApplicationException("This username is already in use");
         }
+
         try{
         farmMarketRepository.newSeller(name, email, address, username, password, phone);
         } catch (Exception e){
+
             System.out.println(e);
         }
     }
 
-    public String login(Login login){
+    public String login(Login login) {
         int id = farmMarketRepository.getSellerId(login.getUsername());
         if (loginService.validate(login.getUsername(), login.getPassword())) {
             Date date = new Date();
-            Date expiry = new Date(date.getTime() + 1000*60*60*24);
+            Date expiry = new Date(date.getTime() + 1000 * 60 * 60 * 24);
             JwtBuilder builder = Jwts.builder()
                     .setExpiration(expiry)
                     .setIssuedAt(new Date())
@@ -69,11 +72,11 @@ public class FarmMarketService {
         throw new ApplicationException("Username or password is incorrect");
     }
 
-    public List<Product> getProductBySeller(int sellerId){
+    public List<Product> getProductBySeller(int sellerId) {
         return farmMarketRepository.getProductBySeller(sellerId);
     }
 
-    public SellerResponse getSeller(int sellerId){
+    public SellerResponse getSeller(int sellerId) {
         return farmMarketRepository.getSeller(sellerId);
     }
 
@@ -82,41 +85,46 @@ public class FarmMarketService {
         farmMarketRepository.newProduct(sellerId, categoryId, productName, productDescription, price, amount);
     }
 
-    public List<Category> getCategory(){
+    public List<Category> getCategory() {
         return farmMarketRepository.getCategory();
     }
 
     public void updateProduct(int id, int categoryId, String productName, String productDescription,
-                              BigDecimal price, BigDecimal amount){
+                              BigDecimal price, BigDecimal amount) {
         farmMarketRepository.updateProduct(id, categoryId, productName, productDescription, price, amount);
     }
 
-    public void updateSeller(int id, String name, String email, String address, String personalInformation, String phone){
+    public void updateSeller(int id, String name, String email, String address, String personalInformation, String phone) {
         farmMarketRepository.updateSeller(id, name, email, address, personalInformation, phone);
     }
 
 
-    public void updateSellerPassword(String name, String username, String email, String password){
-        if(!farmMarketRepository.doesEmailExist(email)){
-            throw new ApplicationException("Email is incorrect");}
+    public void updateSellerPassword(String name, String username, String email, String password) {
+        if (!farmMarketRepository.doesEmailExist(email)) {
+            throw new ApplicationException("Email is incorrect");
+        }
         String nameInTable = farmMarketRepository.getName(email);
-        if(!nameInTable.equals(name)){
+        if (!nameInTable.equals(name)) {
             throw new ApplicationException("Name is incorrect");
-            }
+        }
         String usernameInTable = farmMarketRepository.getUsername(email);
-        if(!usernameInTable.equals(username)){
+        if (!usernameInTable.equals(username)) {
             throw new ApplicationException("Username is incorrect");
-            }
+        }
         farmMarketRepository.updateSellerPassword(email, password);
     }
 
     public List<ProductGetFullInfo> searchProduct(String searchWord) {
+
+        if (searchWord == null || searchWord.isBlank()) {
+            return findAllProducts();
+        }
         List<Product> myList = productRepository.findAllByProductNameContainingIgnoreCase(searchWord);
-       List<ProductGetFullInfo> fullList = new ArrayList<>();
+        List<ProductGetFullInfo> fullList = new ArrayList<>();
         for (Product product : myList) {
             fullList.add(new ProductGetFullInfo(product));
         }
-       return fullList;
+        return fullList;
     }
     public List<ProductGetFullInfo> findAllProducts() {
         List<Integer> allProductsId = farmMarketRepository.allProductsID();
@@ -143,41 +151,53 @@ public class FarmMarketService {
         return sellerOp.orElseThrow(() -> new RuntimeException("Mistake is query"));
     }
 
-    public Product getProductById (Integer id) {
+    public Product getProductById(Integer id) {
         Optional<Product> productOp = productRepository.findById(id);
         return productOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
-    public Category getCategoryById (Integer id) {
+    public Category getCategoryById(Integer id) {
         Optional<Category> categoryOp = categoryRepository.findById(id);
         return categoryOp.orElseThrow(() -> new RuntimeException("Mistake in query"));
     }
 
-    public List<ProductGetFullInfo> getProductsByCategory (String name) {
+    public List<ProductGetFullInfo> getProductsByCategory(String name) {
         List<Product> productList = productRepository.findAllByCategoryCategoryNameContainingIgnoreCase(name);
         List<ProductGetFullInfo> allProducts = new ArrayList<>();
         for (Product product : productList) {
             allProducts.add(new ProductGetFullInfo(product));
         }
-        return  allProducts;
+        return allProducts;
     }
 
+    public List<ProductGetFullInfo> findAllProducts() {
+        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+        for (int i = allProductsId.size() - 1; i >= 0; i--) {
+            Product product = getProductById(allProductsId.get(i));
+            allProducts.add(new ProductGetFullInfo(product));
+        }
+        return allProducts;
+    }
 
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
         List<CategoriesGetAll> allCategories = new ArrayList<>();
-        for(int j=1; j<=i; j++) {
+        for (int j = 1; j <= i; j++) {
             Category category = getCategoryById(j);
             allCategories.add(new CategoriesGetAll(category));
         }
-        return  allCategories;
+        return allCategories;
 
     }
-    public void uploadFile(byte [] file){
+
+    public void uploadFile(byte[] file) {
         farmMarketRepository.uploadFile(file);
     }
 
+
     public void sendEmailtoSeller( String text)  throws MessagingException {
+
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
@@ -187,7 +207,8 @@ public class FarmMarketService {
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("farmmarketAMI", "FarmMarket2020");
-            } });
+            }
+        });
 
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("farmMarketAMI@gmail.com"));

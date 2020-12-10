@@ -6,8 +6,10 @@ public class ProductRequest {
     private Integer categoryId;
     private String productName;
     private String productDescription;
+
     private String price;
     private String amount;
+
 
     public Integer getId() {
         return id;
