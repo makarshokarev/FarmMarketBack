@@ -15,6 +15,7 @@ public class ProductGetFullInfo {
     private String sellerPhone;
     private String categoryPicture;
     private String categoryName;
+    private int id;
 
     public ProductGetFullInfo(Product product) {
         this.productName = product.getProductName();
@@ -27,6 +28,7 @@ public class ProductGetFullInfo {
         this.sellerPhone = product.getSeller().getPhone();
         this.categoryPicture = product.getCategory().getCategoryPicture();
         this.categoryName = product.getCategory().getCategoryName();
+        this.id = product.getId();
         }
 
     public String getProductName() {
@@ -107,5 +109,13 @@ public class ProductGetFullInfo {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
