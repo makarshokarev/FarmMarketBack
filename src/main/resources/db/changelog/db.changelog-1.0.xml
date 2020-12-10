@@ -126,7 +126,7 @@
         </sql>
         <sql>
             insert into category (category_name, category_icon, category_picture) values ('OTHER',
-            'mdi-view-sequential', '/pictures/other.jpg')
+            'mdi-view-sequential', '/pictures/other.jpeg')
         </sql>
     </changeSet>
 </databaseChangeLog>

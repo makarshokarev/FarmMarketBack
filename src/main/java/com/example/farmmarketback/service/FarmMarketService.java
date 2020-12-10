@@ -72,8 +72,13 @@ public class FarmMarketService {
         throw new ApplicationException("Username or password is incorrect");
     }
 
-    public List<Product> getProductBySeller(int sellerId) {
-        return farmMarketRepository.getProductBySeller(sellerId);
+    public List<ProductGetFullInfo> getProductBySeller(int sellerId) {
+        List<Product> myList = farmMarketRepository.getProductBySeller(sellerId);
+        List<ProductGetFullInfo> fullList = new ArrayList<>();
+        for (Product product : myList) {
+            fullList.add(new ProductGetFullInfo(product));
+        }
+                return fullList;
     }
 
     public SellerResponse getSeller(int sellerId) {
@@ -180,6 +185,19 @@ public class FarmMarketService {
             return answer;
     }
 
+    public List<ProductGetFullInfo> searchProductByCategoryAndNameAuth (Integer sellerId) {
+        List<ProductGetFullInfo> answer = new ArrayList<>();
+
+            List<Product> myList = productRepository.findAllBySeller_Id(sellerId);
+            List<ProductGetFullInfo> fullList = new ArrayList<>();
+            for (Product product : myList) {
+                fullList.add(new ProductGetFullInfo(product));
+            }
+            answer = fullList;
+
+            return answer;
+    }
+
     public Seller getSellerById(Integer id) {
         Optional<Seller> sellerOp = sellerRepository.findById(id);
         return sellerOp.orElseThrow(() -> new RuntimeException("Mistake is query"));
@@ -204,15 +222,15 @@ public class FarmMarketService {
         return allProducts;
     }
 
-    public List<ProductGetFullInfo> findAllProducts() {
-        List<Integer> allProductsId = farmMarketRepository.allProductsID();
-        List<ProductGetFullInfo> allProducts = new ArrayList<>();
-        for (int i = allProductsId.size() - 1; i >= 0; i--) {
-            Product product = getProductById(allProductsId.get(i));
-            allProducts.add(new ProductGetFullInfo(product));
-        }
-        return allProducts;
-    }
+//    public List<ProductGetFullInfo> findAllProducts() {
+//        List<Integer> allProductsId = farmMarketRepository.allProductsID();
+//        List<ProductGetFullInfo> allProducts = new ArrayList<>();
+//        for (int i = allProductsId.size() - 1; i >= 0; i--) {
+//            Product product = getProductById(allProductsId.get(i));
+//            allProducts.add(new ProductGetFullInfo(product));
+//        }
+//        return allProducts;
+//    }
 
     public List<CategoriesGetAll> findAllCategories() {
         int i = categoryRepository.findAll().size();
