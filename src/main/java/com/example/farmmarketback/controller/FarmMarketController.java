@@ -58,12 +58,16 @@ public class FarmMarketController {
     @CrossOrigin
     @PostMapping("newProduct")
     public PopUpWindow newProduct(Authentication authentication, @RequestBody ProductRequest product) {
+        try{
         BigDecimal price = new BigDecimal(product.getPrice().replace(",","."));
         BigDecimal amount = new BigDecimal(product.getAmount().replace(",", "."));
         MyUser userDetails = (MyUser) authentication.getPrincipal();
         int sellerId = userDetails.getId();
         farmMarketService.newProduct(sellerId, product.getCategoryId(), product.getProductName(), product.getProductDescription(), price, amount);
-        return new PopUpWindow("You have added new product: " + product.getProductName());
+        return new PopUpWindow("You have added new product: " + product.getProductName());}
+        catch (NullPointerException e){
+            return new PopUpWindow("You have to register as a seller first!");
+        }
     }
 
     @GetMapping("category")
