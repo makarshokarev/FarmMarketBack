@@ -187,10 +187,7 @@ public class FarmMarketRepository {
 
 
     public void uploadFile(byte[] file){
-        String sql = "INSERT INTO files (file) value (:m1)";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("m1", file);
-        jdbcTemplate.update(sql, paramMap);
+
     }
 
     public void removeProduct(int id){

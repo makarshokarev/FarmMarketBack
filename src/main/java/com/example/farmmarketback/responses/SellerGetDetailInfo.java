@@ -3,6 +3,7 @@ package com.example.farmmarketback.responses;
 import com.example.farmmarketback.entity.Seller;
 
 public class SellerGetDetailInfo {
+    private String userName;
     private String name;
     private String email;
     private String phone;
@@ -13,6 +14,15 @@ public class SellerGetDetailInfo {
         this.email = seller.getEmail();
         this.phone = seller.getPhone();
         this.productCount = seller.getProducts().size();
+        this.userName = seller.getUsername();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getName() {

@@ -20,6 +20,7 @@ public class Product {
     private BigDecimal price;
     private BigDecimal amount;
 
+
     public Category getCategory() {
         return category;
     }
